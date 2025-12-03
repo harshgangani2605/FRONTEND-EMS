@@ -1,0 +1,79 @@
+<div class="form-container" >
+  <h2>Edit Employee</h2>
+
+  <form #form="ngForm" (ngSubmit)="update(form)">
+
+    <!-- Full Name -->
+    <label class="label">Full Name</label>
+    <input 
+    class="form-input"
+      type="text" 
+      name="fullName" 
+      [(ngModel)]="model.fullName" 
+      required
+    />
+
+    <!-- Email -->
+    <label class="label">Email</label>
+    <input 
+      type="email" 
+       class="form-input"
+      name="email" 
+      [(ngModel)]="model.email" 
+      required
+    />
+
+    <!-- Salary -->
+    <label class="label">Salary</label>
+    <input 
+      type="number" 
+       class="form-input"
+      name="salary" 
+      [(ngModel)]="model.salary" 
+      required
+    />
+
+    <!-- Joined On -->
+    <label class="label">Joined On</label>
+    <input 
+      type="date" 
+       class="form-input"
+      name="joinedOn" 
+      [(ngModel)]="model.joinedOn"
+      required
+    />
+
+    <!-- Department -->
+    <label class="label">Department</label>
+    <select 
+      name="departmentId" 
+
+      [(ngModel)]="model.departmentId"
+      required
+    >
+      <option *ngFor="let d of departments" [value]="d.id">
+        {{ d.name }}
+      </option>
+    </select>
+
+    <!-- Skills -->
+     
+   <label class="label">Skills</label>
+<div class="skills-box">
+  
+  <label class="skill-item" *ngFor="let skill of skills">
+    <input 
+      type="checkbox"
+      [checked]="model.skillIds.includes(skill.id)"
+      (change)="toggleSkill(skill.id, $event)"
+    />
+    <span>{{ skill.name }}</span>
+  </label>
+
+</div>
+
+
+    <button type="submit" class="save-btn">Update</button>
+
+  </form>
+</div>

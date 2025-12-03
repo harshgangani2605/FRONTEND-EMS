@@ -1,0 +1,142 @@
+/* ===========================================
+   CONTAINER CARD
+=========================================== */
+.register-container {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 18px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+  max-width: 500px;
+  margin: 40px auto;
+  border: 1px solid #e5e7eb;
+  box-sizing: border-box;
+}
+
+/* Title */
+.register-container h2 {
+  text-align: center;
+  font-size: 26px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 20px;
+}
+
+/* ===========================================
+   FORM GROUP
+=========================================== */
+.form-group {
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 6px;
+}
+
+.form-group input {
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+  font-size: 15px;
+  transition: 0.25s ease;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #4F46E5;
+  background: #ffffff;
+  box-shadow: 0 0 6px rgba(79,70,229,0.25);
+}
+
+/* ===========================================
+   REGISTER BUTTON
+=========================================== */
+button[type="submit"] {
+  width: 100%;
+  padding: 12px;
+  background: #374151;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.25s;
+  box-shadow: 0px 4px 12px rgba(0,0,0,0.10);
+}
+
+button[type="submit"]:hover:not(:disabled) {
+  background: #111827;
+  transform: translateY(-2px);
+}
+
+button[type="submit"]:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* ===========================================
+   ERROR & SUCCESS MESSAGE
+=========================================== */
+.error {
+  color: #dc2626;
+  font-size: 14px;
+  margin: 5px 0 10px 0;
+  font-weight: 500;
+}
+
+.success {
+  color: #16a34a;
+  font-size: 14px;
+  margin: 5px 0 10px 0;
+  font-weight: 500;
+}
+
+/* ===========================================
+   LOGIN LINK
+=========================================== */
+.login-link {
+  text-align: center;
+  font-size: 14px;
+  margin-top: 15px;
+  color: #4b5563;
+}
+
+.login-link a {
+  color: #4F46E5;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.login-link a:hover {
+  text-decoration: underline;
+}
+
+/* ===========================================
+   RESPONSIVE DESIGN
+=========================================== */
+@media (max-width: 480px) {
+  .register-container {
+    padding: 24px;
+    margin: 20px;
+  }
+
+  .register-container h2 {
+    font-size: 22px;
+  }
+
+  .form-group input {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  button[type="submit"] {
+    font-size: 15px;
+    padding: 10px;
+  }
+}

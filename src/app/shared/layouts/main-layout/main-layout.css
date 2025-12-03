@@ -1,0 +1,168 @@
+/* LAYOUT */
+.layout-container {
+  display: flex;
+  background: #f2f4f7;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 250px;
+  background: #1f2937;
+  color: #e5e7eb;
+  height: 100vh;
+  padding: 22px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  transform: translateX(0);
+  transition: 0.3s ease;
+  z-index: 2000;
+}
+
+/* MOBILE - hide sidebar */
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-270px);
+  }
+  .sidebar.open {
+    transform: translateX(0);
+  }
+}
+
+/* LOGO */
+.logo-area h2 {
+  color: white;
+  margin: 0;
+  font-size: 26px;
+  font-weight: 700;
+}
+.logo-area p {
+  font-size: 12px;
+  color: #9ca3af;
+  margin-top: -4px;
+}
+
+/* MENU */
+.menu {
+  list-style: none;
+  padding: 0;
+  margin-top: 25px;
+}
+.menu li {
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+  gap: 12px;
+  margin-bottom: 8px;
+  font-size: 15px;
+  color: #d1d5db;
+  transition: .2s;
+}
+.menu li:hover,
+.menu li.active {
+  background: #374151;
+  color: white;
+}
+
+/* LOGOUT BUTTON */
+.logout-btn {
+  width: 100%;
+  margin-top: auto;
+  padding: 13px;
+  background: #ef4444;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* CONTENT AREA */
+.content-area {
+  width: 100%;
+  min-height: 100vh;
+  padding: 20px 30px;
+}
+
+/* Desktop: push content */
+@media (min-width: 769px) {
+  .content-area {
+    margin-left: 250px;
+  }
+}
+
+/* HEADER BAR */
+.header-bar {
+  width: 100%;
+  background: white;
+  padding: 15px 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.header-actions {
+  display: flex;
+  gap: 18px;
+  font-size: 20px;
+  align-items: center;
+}
+
+.profile-pic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+/* PAGE CONTENT */
+.page-content {
+  margin-top: 10px;
+}
+
+/* MOBILE SPACING FIX FOR HEADER */
+@media (max-width: 768px) {
+  .header-bar {
+    margin-top: 55px !important;
+  }
+}
+
+/* MOBILE TOGGLE (FINAL FIXED VERSION) */
+.mobile-toggle {
+  position: fixed !important;
+  top: 10px !important;
+  left: 10px !important;
+  z-index: 5000 !important;
+  background: #1f2937;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  font-size: 22px;
+  border-radius: 8px;
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobile-toggle {
+    display: block;
+  }
+}
+
+/* DARK OVERLAY FOR MOBILE */
+.overlay {
+  position: fixed;
+  height: 100vh;
+  width: 100%;
+  background: rgba(0,0,0,0.55);
+  left: 0;
+  top: 0;
+  z-index: 1500;
+  display: none;
+}
+.overlay.active {
+  display: block;
+}

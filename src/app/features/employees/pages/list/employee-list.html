@@ -1,0 +1,90 @@
+<div class="employee-container">
+
+  <div class="header-row">
+
+    <h2>Employees</h2>
+
+    <div class="header-actions">
+      <!-- 🔍 SEARCH BAR -->
+      <input 
+        type="text"
+        class="search-input"
+        placeholder="Search employees..."
+        [(ngModel)]="searchText"
+        (input)="filterEmployees()"
+      />
+
+      <button class="add-btn"
+              *hasPermission="'employee.create'"
+              (click)="create()">
+        + Add Employee
+      </button>
+    </div>
+
+  </div>
+
+  <div class="table-wrapper">
+    <table class="employee-table" *ngIf="!loading">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Joined On</th>
+          <th>Department</th>
+          <th>Salary</th>
+          <th>Skills</th>
+
+          <th *hasPermission="'employee.edit'"></th>
+          <th *hasPermission="'employee.delete'"></th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <!-- 🔹 PAGINATION APPLIED -->
+        <tr *ngFor="let emp of paginatedEmployees; let i = index">
+          <td>{{ (page - 1) * pageSize + i + 1 }}</td>
+          <td>{{ emp.fullName }}</td>
+          <td>{{ emp.email }}</td>
+          <td>{{ emp.joinedOn | date: 'dd-MM-yyyy' }}</td>
+          <td>{{ emp.departmentName || 'No Department' }}</td>
+          <td>{{ emp.salary | currency:'INR' }}</td>
+          <td>{{ getSkillNames(emp.skills) }}</td>
+
+          <td *hasPermission="'employee.edit'" class="action-buttons">
+            <button class="edit-btn" (click)="edit(emp.id)">Edit</button>
+          </td>
+
+          <td *hasPermission="'employee.delete'" class="action-buttons">
+            <button class="delete-btn" (click)="delete(emp.id)">Delete</button>
+          </td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+
+
+  <!-- 🔽 PAGINATION SECTION -->
+  <div class="pagination">
+
+
+
+    <button 
+      [disabled]="page === 1"
+      (click)="page = page - 1">
+      Prev
+    </button>
+
+    <span> Page {{ page }} of {{ totalPages }} </span>
+
+    <button 
+      [disabled]="page === totalPages"
+      (click)="page = page + 1">
+      Next
+    </button>
+
+  </div>
+
+</div>

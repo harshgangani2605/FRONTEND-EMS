@@ -1,0 +1,113 @@
+<div class="register-container">
+  <h2>Register</h2>
+
+  <form #regForm="ngForm" (ngSubmit)="onRegister(regForm)">
+
+    <!-- Full Name -->
+    <div class="form-group">
+      <label>Full Name</label>
+
+      <input 
+        type="text"
+        name="fullName"
+        [(ngModel)]="fullName"
+        #fullNameCtrl="ngModel"
+        required
+        minlength="3"
+      />
+
+      <!-- Full Name Errors -->
+      <p class="error" *ngIf="fullNameCtrl.touched && fullNameCtrl.errors?.['required']">
+        Full Name is required
+      </p>
+
+      <p class="error" *ngIf="fullNameCtrl.touched && fullNameCtrl.errors?.['minlength']">
+        Full Name must be at least 3 characters
+      </p>
+    </div>
+
+    <!-- Email -->
+    <div class="form-group">
+      <label>Email</label>
+
+      <input 
+        type="email"
+        name="email"
+        [(ngModel)]="email"
+        #emailCtrl="ngModel"
+        required
+        email
+      />
+
+      <!-- Email Errors -->
+      <p class="error" *ngIf="emailCtrl.touched && emailCtrl.errors?.['required']">
+        Email is required
+      </p>
+
+      <p class="error" *ngIf="emailCtrl.touched && emailCtrl.errors?.['email']">
+        Invalid email format
+      </p>
+    </div>
+
+    <!-- Password -->
+    <div class="form-group">
+      <label>Password</label>
+
+      <input 
+        type="password"
+        name="password"
+        [(ngModel)]="password"
+        #passCtrl="ngModel"
+        required
+        minlength="6"
+      />
+
+      <!-- Password Errors -->
+      <p class="error" *ngIf="passCtrl.touched && passCtrl.errors?.['required']">
+        Password is required
+      </p>
+
+      <p class="error" *ngIf="passCtrl.touched && passCtrl.errors?.['minlength']">
+        Password must be at least 6 characters
+      </p>
+    </div>
+
+    <!-- Confirm Password -->
+    <div class="form-group">
+      <label>Confirm Password</label>
+
+      <input 
+        type="password"
+        name="confirmPassword"
+        [(ngModel)]="confirmPassword"
+        #confirmCtrl="ngModel"
+        required
+      />
+
+      <!-- Confirm Password Errors -->
+      <p class="error" *ngIf="confirmCtrl.touched && confirmCtrl.errors?.['required']">
+        Confirm Password is required
+      </p>
+
+      <p class="error" *ngIf="confirmCtrl.touched && confirmPassword !== password">
+        Passwords do not match
+      </p>
+    </div>
+
+    <!-- Global API Messages -->
+    <p class="error">{{ errorMessage }}</p>
+    <p class="success">{{ successMessage }}</p>
+
+    <!-- Register Button -->
+    <button type="submit" [disabled]="regForm.invalid">
+      Register
+    </button>
+
+    <!-- Login Link -->
+    <p class="login-link">
+      Already have an account?
+      <a routerLink="/login">Login</a>
+    </p>
+
+  </form>
+</div>

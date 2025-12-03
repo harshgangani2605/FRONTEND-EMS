@@ -1,0 +1,66 @@
+<ng-container *hasPermission="'employee.create'">
+  <div class="form-container">
+
+    <h2>Create Employee</h2>
+
+    <form #form="ngForm" (ngSubmit)="save(form)">
+
+      <!-- Full Name -->
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" class="form-input" name="fullName" [(ngModel)]="employee.fullName" required />
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email"  class="form-input" name="email" [(ngModel)]="employee.email" required />
+      </div>
+
+      <!-- Salary -->
+      <div class="form-group">
+        <label>Salary</label>
+        <input type="number" class="form-input" name="salary" [(ngModel)]="employee.salary" required />
+      </div>
+
+      <!-- Date Joined -->
+      <div class="form-group">
+        <label>Joined On</label>
+        <input type="date" class="form-input" name="joinedOn" [(ngModel)]="employee.joinedOn" required />
+      </div>
+
+      <!-- Department -->
+      <div class="form-group">
+        <label>Department</label>
+        <select name="departmentId" [(ngModel)]="employee.departmentId" required>
+          <option value="">Select Department</option>
+          <option *ngFor="let dept of departments" [value]="dept.id">
+            {{ dept.name }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Skills -->
+      <div class="form-group">
+        <label>Skills</label>
+
+        <div class="skills-box">
+          <div class="skill-item" *ngFor="let skill of skills">
+            <input
+              type="checkbox"
+              [value]="skill.id"
+              (change)="toggleSkill(skill.id, $event)"
+              [checked]="employee.skillIds.includes(skill.id)"
+            />
+            <span>{{ skill.name }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <button type="submit" class="save-btn">Save Employee</button>
+
+    </form>
+
+  </div>
+</ng-container>

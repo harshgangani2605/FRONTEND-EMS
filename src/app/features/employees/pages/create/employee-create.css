@@ -1,0 +1,98 @@
+
+    .form-container {
+      background: #fff;
+      width: 480px;
+      padding: 30px;
+      margin: 20px auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+    }
+    
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      font-weight: 600;
+    }
+    
+    .form-group {
+      margin-bottom: 18px;
+    }
+    
+    label {
+      font-weight: 500;
+      margin-bottom: 6px;
+      display: block;
+    }
+    
+    input,
+    select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #d3d3d3;
+      border-radius: 6px;
+      font-size: 14px;
+      outline: none;
+      transition: 0.2s;
+    }
+    .form-input{
+      width: 100%;
+    }
+    input:focus,
+    select:focus {
+      border-color: #374151;
+      box-shadow: 0 0 5px rgba(45, 108, 223, 0.3);
+      
+    }
+
+    .form-group-skills {
+        margin-bottom: 18px;
+    }
+    
+    .skills-box {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      background: #f8f9fc;
+      padding: 12px;
+      border-radius: 8px;
+    }
+    
+    .skill-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: #eef2ff;
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .skill-item input[type="checkbox"] {
+        width: auto;
+        margin: 0;
+    }
+    
+    .save-btn {
+      width: 100%;
+      background: #374151;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    
+    .save-btn:hover {
+      background: #374151;
+    }
+    
+    /* Mobile */
+    @media (max-width: 600px) {
+      .form-container {
+        width: 100%;
+        padding: 20px;
+      }
+    }

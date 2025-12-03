@@ -1,0 +1,12 @@
+<div class="form-container">
+  <h2>Add Skill</h2>
+
+  <form #form="ngForm" (ngSubmit)="save(form)">
+    <div class="form-group">
+      <label>Skill Name</label>
+      <input type="text" name="name" [(ngModel)]="model.name" required />
+    </div>
+
+    <button class="save-btn" type="submit">Save Skill</button>
+  </form>
+</div>

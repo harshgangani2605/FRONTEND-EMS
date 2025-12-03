@@ -1,0 +1,163 @@
+/* Main container */
+.role-container {
+  background: #ffffff;
+  padding: 28px;
+  border-radius: 18px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+  margin: 25px auto;
+  width: 100%;
+  max-width: 1300px;
+  border: 1px solid #e5e7eb;
+}
+
+/* Header */
+.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+}
+
+.header-row h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+}
+
+/* Add Button */
+.add-btn {
+  background: #374151;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  transition: 0.25s;
+}
+
+.add-btn:hover {
+  background: #111827;
+  transform: translateY(-2px);
+}
+
+/* Table Wrapper */
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.role-table {
+  width: 100%;
+  min-width: 800px;
+  border-collapse: collapse;
+}
+
+.role-table th {
+  background: #F3F4F6;
+  padding: 14px;
+  font-weight: 600;
+  font-size: 14px;
+  color: #374151;
+}
+
+.role-table td {
+  padding: 14px;
+  border-bottom: 1px solid #f1f1f1;
+  font-size: 14px;
+  color: #374151;
+}
+
+.role-table tr:hover td {
+  background: #F9FAFB;
+}
+
+/* Action Buttons */
+.action-buttons {
+  white-space: nowrap;
+}
+
+.edit-btn,
+.delete-btn {
+  background: #374151;
+  padding: 7px 16px;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  font-size: 12px;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.edit-btn:hover,
+.delete-btn:hover {
+  background: #111827;
+  transform: translateY(-2px);
+}
+
+.delete-btn {
+  background: #b91c1c;
+}
+
+.delete-btn:hover {
+  background: #7f1d1d;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 22px;
+  gap: 12px;
+}
+
+.pagination button {
+  background: #374151;
+  color: white;
+  padding: 8px 18px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+.pagination button:hover:not(:disabled) {
+  background: #111827;
+  transform: translateY(-2px);
+}
+
+.pagination button:disabled {
+  background: #9CA3AF;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  font-size: 15px;
+  font-weight: 500;
+  color: #374151;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .header-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .add-btn {
+    width: 100%;
+  }
+}

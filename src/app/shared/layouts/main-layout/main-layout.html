@@ -1,0 +1,74 @@
+<!-- MOBILE TOGGLE BUTTON -->
+<button class="mobile-toggle" (click)="toggleSidebar()">
+  <i class="bi bi-list"></i>
+</button>
+
+<!-- MOBILE DARK OVERLAY -->
+<div class="overlay" [class.active]="sidebarOpen" (click)="closeSidebar()"></div>
+
+<div class="layout-container">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" [class.open]="sidebarOpen">
+
+    <div class="logo-area">
+      <h2>EMS</h2>
+      <p>Employee System</p>
+    </div>
+
+    <ul class="menu">
+      <li routerLink="/dashboard" routerLinkActive="active" (click)="closeSidebar()">
+        <i class="bi bi-speedometer2"></i> Dashboard
+      </li>
+
+      <li routerLink="/employees" routerLinkActive="active" (click)="closeSidebar()" *hasPermission="'employee.view'">
+        <i class="bi bi-people"></i> Employees
+      </li>
+
+      <li routerLink="/department" routerLinkActive="active" (click)="closeSidebar()" *hasPermission="'department.view'">
+        <i class="bi bi-building"></i> Departments
+      </li>
+
+      <li routerLink="/skills" routerLinkActive="active" (click)="closeSidebar()" *hasPermission="'skill.view'">
+        <i class="bi bi-layers"></i> Skills
+      </li>
+
+      <li routerLink="/users" routerLinkActive="active" (click)="closeSidebar()" *hasPermission="'user.view'">
+        <i class="bi bi-person-circle"></i> Users
+      </li>
+
+      <li routerLink="/roles" routerLinkActive="active" (click)="closeSidebar()" *hasPermission="'role.manage'">
+        <i class="bi bi-shield-lock"></i> Roles
+      </li>
+    </ul>
+
+    <button class="logout-btn" (click)="logout()">
+      <i class="bi bi-box-arrow-right"></i> Logout
+    </button>
+  </aside>
+
+  <!-- MAIN AREA -->
+  <main class="content-area">
+
+    <!-- HEADER (profile restored) -->
+    <div class="header-bar">
+      <h3 class="page-title">Employee Management System</h3>
+
+      <div class="header-actions">
+        <i class="bi bi-bell"></i>
+        <i class="bi bi-gear"></i>
+
+        <img src="assets/image.png"
+             class="profile-pic"
+             (click)="openProfile()"/>
+      </div>
+    </div>
+
+    <!-- ROUTER CONTENT -->
+    <div class="page-content">
+      <router-outlet></router-outlet>
+    </div>
+
+  </main>
+
+</div>

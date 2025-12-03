@@ -1,0 +1,12 @@
+<div class="form-container">
+  <h2>Add Department</h2>
+
+  <form #form="ngForm" (ngSubmit)="save(form)">
+    
+    <label>Department Name</label>
+    <input type="text" name="name" [(ngModel)]="model.name" required />
+
+    <button class="save-btn" type="submit">Save</button>
+
+  </form>
+</div>
