@@ -43,6 +43,12 @@
       box-shadow: 0 0 5px rgba(45, 108, 223, 0.3);
       
     }
+.error {
+  color: red;
+  font-size: 13px;
+  margin-top: 4px;
+  display: block;
+}
 
     .form-group-skills {
         margin-bottom: 18px;

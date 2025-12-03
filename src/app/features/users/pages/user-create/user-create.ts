@@ -9,7 +9,7 @@ import { ApiService } from '../../../../core/services/api.service';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './user-create.html',
-  styleUrl:'./user-create.css'
+  styleUrls: ['./user-create.css']   // 🔥 FIXED: should be styleUrls
 })
 export class UserCreateComponent implements OnInit {
 
@@ -37,9 +37,30 @@ export class UserCreateComponent implements OnInit {
   save(form: any) {
     if (form.invalid) return;
 
-    this.api.post('Admin/create-user', this.model).subscribe(() => {
-      alert('User Created!');
-      this.router.navigate(['/users']);
+    this.api.post('Admin/create-user', this.model).subscribe({
+      next: () => {
+        alert('User created successfully!');
+        this.router.navigate(['/users']);
+      },
+
+      error: (err) => {
+        // 🔥 Universal backend error extraction
+        const msg =
+          (err.error?.message ||
+           err.error?.detail ||
+           err.error?.title ||
+           err.error ||
+           "")
+            .toString()
+            .toLowerCase();
+
+        console.log("USER CREATE ERROR:", msg);
+
+        if (msg.includes("exists") || msg.includes("already"))
+          alert("User already exists! Please use a different email.");
+        else
+          alert("Failed to create user.");
+      }
     });
   }
 }

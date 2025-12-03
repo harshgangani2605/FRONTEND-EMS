@@ -16,15 +16,35 @@ export class RoleCreate {
   constructor(private http: HttpClient, private router: Router) {}
 
   save(form: any) {
-    if (form.invalid) return;
+  if (form.invalid) return;
 
-    const body = { name: this.roleName };
+  const body = { name: this.roleName };
 
-    this.http.post('http://localhost:5093/api/Roles/create', body)
-      .subscribe(() => {
+  this.http.post('http://localhost:5093/api/Roles/create', body)
+    .subscribe({
+      next: () => {
         alert("Role created!");
         this.router.navigate(['/roles']);
-      });
-  }
+      },
+
+      error: (err) => {
+        const msg =
+          (err.error?.message ||
+           err.error?.detail ||
+           err.error?.title ||
+           err.error ||
+           "")
+            .toString()
+            .toLowerCase();
+
+        if (msg.includes("exists"))
+          alert("Role already exists!");
+
+        else
+          alert("Failed to create role");
+      }
+    });
+}
+
 
 }

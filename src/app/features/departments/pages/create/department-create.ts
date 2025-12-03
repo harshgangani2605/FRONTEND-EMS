@@ -21,11 +21,34 @@ export class DepartmentCreateComponent {
   ) {}
 
   save(form: any) {
-    if (form.invalid) return;
+    if (form.invalid) {
+      alert("Please enter department name");
+      return;
+    }
 
-    this.service.create(this.model).subscribe(() => {
-      alert('Department created');
-      this.router.navigate(['/department']);
+    this.service.create(this.model).subscribe({
+      next: () => {
+        alert('Department created successfully');
+        this.router.navigate(['/department']);
+      },
+
+      error: (err) => {
+        // UNIVERSAL BACKEND ERROR READER
+        const msg =
+          (err.error?.message ||
+           err.error?.detail ||
+           err.error?.title ||
+           err.error ||
+           "")
+            .toString()
+            .toLowerCase();
+
+        if (msg.includes("name")) {
+          alert("Department name already exists!");
+        } else {
+          alert("Failed to create department");
+        }
+      }
     });
   }
 }

@@ -103,11 +103,11 @@
 }
 
 .delete-btn {
-  background: #b91c1c;
+  background: #374151;
 }
 
 .delete-btn:hover {
-  background: #7f1d1d;
+  background: #374151;
 }
 
 /* Pagination */

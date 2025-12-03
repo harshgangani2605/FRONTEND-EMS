@@ -6,11 +6,10 @@ import { ApiService } from '../../../../core/services/api.service';
 import { Router } from '@angular/router';
 import { HasPermissionDirective } from '../../../../shared/directives/has-permission.directive';
 
-
 @Component({
   selector: 'app-employee-create',
   standalone: true,
-  imports: [CommonModule, FormsModule,HasPermissionDirective],
+  imports: [CommonModule, FormsModule, HasPermissionDirective],
   templateUrl: './employee-create.html',
   styleUrls: ['./employee-create.css']
 })
@@ -18,6 +17,10 @@ export class EmployeeCreateComponent {
 
   departments: any[] = [];
   skills: any[] = [];
+
+  // Validation rules
+  nameMinLength = 3;
+  today = new Date().toISOString().split('T')[0];
 
   employee = {
     fullName: '',
@@ -31,7 +34,7 @@ export class EmployeeCreateComponent {
   constructor(
     private empService: EmployeeService,
     private api: ApiService,
-    private router:Router
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -55,26 +58,76 @@ export class EmployeeCreateComponent {
     if (event.target.checked) {
       this.employee.skillIds.push(skillId);
     } else {
-      this.employee.skillIds =
-        this.employee.skillIds.filter(id => id !== skillId);
+      this.employee.skillIds = this.employee.skillIds.filter(id => id !== skillId);
     }
   }
 
-  save(form: NgForm) {
-    if (form.invalid) {
-      alert("Please fill all fields");
-      return;
-    }
+ save(form: NgForm) {
 
-    this.empService.createEmployee(this.employee).subscribe({
-      next: () =>{ alert("Employee created successfully!");
-                  this.router.navigate(['/employees']);
-      },
-      
-      error: (err) => {
-        console.log(err);
+  // Required validation
+  if (form.invalid) {
+    alert("Please fill all required fields");
+    return;
+  }
+
+  // Name validation
+  if (this.employee.fullName.trim().length < this.nameMinLength) {
+    alert("Full Name must be at least " + this.nameMinLength + " characters long");
+    return;
+  }
+
+  // Email format validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(this.employee.email)) {
+    alert("Please enter a valid email address");
+    return;
+  }
+
+  // Salary validation
+  if (this.employee.salary < 0) {
+    alert("Salary cannot be negative");
+    return;
+  }
+
+  // Date validation
+  if (this.employee.joinedOn > this.today) {
+    alert("Joined date cannot be in the future");
+    return;
+  }
+
+  // Submit
+  this.empService.createEmployee(this.employee).subscribe({
+    next: () => {
+      alert("Employee created successfully!");
+      this.router.navigate(['/employees']);
+    },
+
+    error: (err) => {
+      // Universal backend error extraction
+      const backendMsg =
+        (err.error?.message ||
+         err.error?.detail ||
+         err.error?.title ||
+         err.error ||
+         err.Message ||
+         err.statusText ||
+         "")
+          .toString()
+          .toLowerCase();
+
+      console.log("BACKEND ERROR:", backendMsg);
+
+      if (backendMsg.includes("email"))
+        alert("Email already exists!");
+
+      else if (backendMsg.includes("name"))
+        alert("Employee name already exists!");
+
+      else
         alert("Failed to create employee");
-      }
-    });
-  }
+    }
+  });
+}
+
+
 }
