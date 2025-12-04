@@ -15,13 +15,16 @@ import { HasPermissionDirective } from '../../../../shared/directives/has-permis
 export class SkillListComponent implements OnInit {
 
   skills: any[] = [];
-  filteredSkills: any[] = [];
-  loading = true;
 
   searchText = "";
+  loading = true;
 
+  // Backend pagination
   page = 1;
-  pageSize = 10;
+  pageSize = 4;
+
+  totalItems = 0;
+  totalPages = 0;
 
   constructor(
     private service: SkillsService,
@@ -29,50 +32,58 @@ export class SkillListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.service.getAll().subscribe((res: any[]) => {
-      this.skills = res;
-      this.filteredSkills = res;
+    this.getSkills();
+  }
+
+  // 🔹 Load paged skills from backend
+  getSkills() {
+    this.loading = true;
+
+    this.service.getPaged(this.page, this.pageSize, this.searchText).subscribe((res: any) => {
+      this.skills = res.items;
+      this.totalItems = res.totalItems;
+      this.totalPages = res.totalPages;
       this.loading = false;
     });
   }
 
-  // Search
+  // 🔍 Search
   filterSkills() {
-    const t = this.searchText.toLowerCase();
-    this.filteredSkills = this.skills.filter(s =>
-      s.name.toLowerCase().includes(t)
-    );
     this.page = 1;
+    this.getSkills();
   }
 
-  // Create
+  // ➕ Create Skill
   create() {
     this.router.navigate(['/skills/create']);
   }
 
-  // Edit
+  // ✏ Edit
   edit(id: number) {
     this.router.navigate(['/skills/edit', id]);
   }
 
-  // Delete
+  // 🗑 Delete
   delete(id: number) {
     if (!confirm("Delete this skill?")) return;
 
     this.service.delete(id).subscribe(() => {
-      this.skills = this.skills.filter(x => x.id !== id);
-      this.filterSkills();
+      this.getSkills();
     });
   }
 
-  // Pagination
-  get paginatedSkills() {
-    const start = (this.page - 1) * this.pageSize;
-    return this.filteredSkills.slice(start, start + this.pageSize);
+  // Pagination click
+  nextPage() {
+    if (this.page < this.totalPages) {
+      this.page++;
+      this.getSkills();
+    }
   }
 
-  get totalPages() {
-    return Math.ceil(this.filteredSkills.length / this.pageSize);
+  prevPage() {
+    if (this.page > 1) {
+      this.page--;
+      this.getSkills();
+    }
   }
-
 }

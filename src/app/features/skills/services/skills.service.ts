@@ -8,8 +8,10 @@ export class SkillsService {
 
   constructor(private http: HttpClient) {}
 
-  getAll() {
-    return this.http.get<any[]>(this.api);
+  getPaged(page: number, pageSize: number, search: string) {
+    return this.http.get(
+      `${this.api}?page=${page}&pageSize=${pageSize}&search=${search}`
+    );
   }
 
   getById(id: number) {

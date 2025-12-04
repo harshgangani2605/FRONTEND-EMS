@@ -15,14 +15,14 @@ import { FormsModule } from '@angular/forms';
 export class EmployeeListComponent implements OnInit {
 
   employees: any[] = [];
-  filteredEmployees: any[] = [];
-
-  searchText: string = "";
   loading = true;
+  Math = Math;
 
-  // 🔹 Pagination variables
+  // Search + Pagination
+  searchText: string = "";
   page = 1;
   pageSize = 2;
+  totalItems = 0;
 
   constructor(
     private service: EmployeeService,
@@ -30,76 +30,64 @@ export class EmployeeListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.getData();
+    this.loadData();
   }
 
-  // 🔄 Load all employees
-  getData() {
+  // 🔄 Load paginated data from backend
+  loadData() {
     this.loading = true;
 
-    this.service.getAll().subscribe({
-      next: (res: any[]) => {
-        this.employees = res;
-        this.filteredEmployees = res;
-        this.loading = false;
-      },
-      error: () => {
-        this.loading = false;
-      }
-    });
+    this.service.getPaged(this.page, this.pageSize, this.searchText)
+      .subscribe({
+        next: (res: any) => {
+          this.employees = res.items;  // data
+          this.totalItems = res.totalItems;
+          this.loading = false;
+        },
+        error: () => {
+          this.loading = false;
+        }
+      });
   }
 
-  // 🔍 Search employees
-  filterEmployees() {
-    const text = this.searchText.toLowerCase();
-
-    this.filteredEmployees = this.employees.filter(emp =>
-      emp.fullName?.toLowerCase().includes(text) ||
-      emp.email?.toLowerCase().includes(text) ||
-      (emp.departmentName || '').toLowerCase().includes(text) ||
-      this.getSkillNames(emp.skills).toLowerCase().includes(text)
-    );
-
-    this.page = 1; // reset to page 1 on search
+  // 🔍 Search function
+  onSearch() {
+    this.page = 1;
+    this.loadData();
   }
 
-  // ✏ Edit employee
+  // Page navigation
+  nextPage() {
+    if (this.page * this.pageSize < this.totalItems) {
+      this.page++;
+      this.loadData();
+    }
+  }
+
+  prevPage() {
+    if (this.page > 1) {
+      this.page--;
+      this.loadData();
+    }
+  }
+
   edit(id: number) {
     this.router.navigate(['/employees/edit', id]);
   }
 
-  // ➕ Create employee
   create() {
     this.router.navigate(['/employees/create']);
   }
 
-  // 🗑 Delete employee
   delete(id: number) {
     if (!confirm("Are you sure you want to delete this employee?")) return;
 
-    this.service.delete(id).subscribe({
-      next: () => {
-        this.getData(); // Refresh list
-      }
+    this.service.delete(id).subscribe(() => {
+      this.loadData();
     });
   }
 
-  // 🏷 Skills formatting
   getSkillNames(skills: any[]) {
-    if (!skills || skills.length === 0) return "No Skills";
-    return skills.join(', ');
+    return skills?.length ? skills.join(', ') : "No Skills";
   }
-
-  // 🔹 Paginated employees getter
-  get paginatedEmployees() {
-    const start = (this.page - 1) * this.pageSize;
-    const end = start + this.pageSize;
-    return this.filteredEmployees.slice(start, end);
-  }
-
-  // 🔹 Total pages count
-  get totalPages() {
-    return Math.ceil(this.filteredEmployees.length / this.pageSize);
-  }
-
 }

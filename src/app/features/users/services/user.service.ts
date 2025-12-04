@@ -19,8 +19,8 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  getUsers(): Observable<UserDto[]> {
-    return this.http.get<UserDto[]>(`${this.api}/users`);
+  getUsersPaged(page: number, pageSize: number, search: string) {
+    return this.http.get(`${this.api}/users?page=${page}&pageSize=${pageSize}&search=${search}`);
   }
 
   getUserByEmail(email: string): Observable<UserDto> {

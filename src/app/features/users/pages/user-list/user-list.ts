@@ -15,68 +15,71 @@ import { UserService } from '../../services/user.service';
 export class UserListComponent implements OnInit {
 
   users: any[] = [];
-  filteredUsers: any[] = [];
 
   loading = true;
   searchText = "";
 
   page = 1;
   pageSize = 10;
+  totalItems = 0;
+  totalPages = 1;
 
   constructor(private service: UserService, private router: Router) {}
 
   ngOnInit() {
-    this.getData();
+    this.loadUsers();
   }
 
-  getData() {
+  // LOAD PAGED USERS FROM API
+  loadUsers() {
     this.loading = true;
 
-    this.service.getUsers().subscribe((res: any[]) => {
-      this.users = res;
-      this.filteredUsers = res;
-      this.loading = false;
-    });
+    this.service.getUsersPaged(this.page, this.pageSize, this.searchText)
+      .subscribe((res: any) => {
+        this.users = res.items;
+        this.totalItems = res.totalItems;
+        this.totalPages = res.totalPages;
+        this.loading = false;
+      });
   }
 
-  // Search functionality
-  filterUsers() {
-    const t = this.searchText.toLowerCase();
-
-    this.filteredUsers = this.users.filter(u =>
-      (u.fullName || '').toLowerCase().includes(t) ||
-      u.email.toLowerCase().includes(t) ||
-      u.roles.join(' ').toLowerCase().includes(t)
-    );
-
+  // SEARCH
+  onSearch() {
     this.page = 1;
+    this.loadUsers();
   }
 
-  // Pagination logic
-  get paginatedUsers() {
-    const start = (this.page - 1) * this.pageSize;
-    return this.filteredUsers.slice(start, start + this.pageSize);
-  }
-
-  get totalPages() {
-    return Math.ceil(this.filteredUsers.length / this.pageSize);
-  }
-
+  // OPEN CREATE USER PAGE
   openCreate() {
     this.router.navigate(['/users/create']);
   }
 
+  // EDIT USER
   goEdit(email: string) {
     this.router.navigate(['/users/edit', email]);
   }
 
+  // DELETE USER
   deleteUser(email: string) {
     if (!confirm("Are you sure to delete this user?")) return;
 
     this.service.deleteUser(email).subscribe(() => {
-      this.users = this.users.filter(x => x.email !== email);
-      this.filterUsers();
+      this.loadUsers();
     });
   }
 
+  // PAGINATION BUTTONS
+  prevPage() {
+    if (this.page > 1) {
+      this.page--;
+      this.loadUsers();
+    }
+  }
+
+  nextPage() {
+    if (this.page < this.totalPages) {
+      this.page++;
+      this.loadUsers();
+    }
+  }
 }

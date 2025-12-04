@@ -3,24 +3,26 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HasPermissionDirective } from '../../../../shared/directives/has-permission.directive';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-roles-list',
   standalone: true,
-  imports: [CommonModule, HasPermissionDirective],
+  imports: [CommonModule, FormsModule, HasPermissionDirective],
   templateUrl: './roles-list.html',
   styleUrls: ['./roles-list.css']
 })
 export class RolesListComponent implements OnInit {
 
   roles: any[] = [];
-  filteredRoles: any[] = [];
-
-  searchText = "";
   loading = true;
+  searchText: string = "";
 
   page = 1;
   pageSize = 10;
+
+  totalItems = 0;
+  totalPages = 1;
 
   constructor(
     private http: HttpClient,
@@ -32,35 +34,23 @@ export class RolesListComponent implements OnInit {
   }
 
   load() {
-    this.loading = true;
+  this.loading = true;
 
-    this.http.get<any[]>('http://localhost:5093/api/Roles')
-      .subscribe(res => {
-        this.roles = res;
-        this.filteredRoles = res;
-        this.loading = false;
-      });
-  }
+  this.http.get<any>(
+      `http://localhost:5093/api/Roles/paged?page=${this.page}&pageSize=${this.pageSize}&search=${this.searchText}`
+    )
+    .subscribe(res => {
+      this.roles = res.items;
+      this.totalItems = res.totalItems;
+      this.totalPages = res.totalPages;
+      this.loading = false;
+    });
+}
 
-  // 🔍 Search roles
-  filterRoles() {
-    const t = this.searchText.toLowerCase();
 
-    this.filteredRoles = this.roles.filter(r =>
-      r.name.toLowerCase().includes(t)
-    );
-
-    this.page = 1;
-  }
-
-  // 🔽 Pagination
+  // Pagination (HTML already expects this)
   get paginatedRoles() {
-    const start = (this.page - 1) * this.pageSize;
-    return this.filteredRoles.slice(start, start + this.pageSize);
-  }
-
-  get totalPages() {
-    return Math.ceil(this.filteredRoles.length / this.pageSize);
+    return this.roles;
   }
 
   goCreate() {
@@ -77,4 +67,9 @@ export class RolesListComponent implements OnInit {
     this.http.delete(`http://localhost:5093/api/Roles/${id}`)
       .subscribe(() => this.load());
   }
+  filterRoles() {
+  this.page = 1; 
+  this.load();
+}
+
 }

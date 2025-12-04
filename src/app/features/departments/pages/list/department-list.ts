@@ -15,11 +15,13 @@ import { HasPermissionDirective } from '../../../../shared/directives/has-permis
 export class DepartmentListComponent implements OnInit {
 
   departments: any[] = [];
-  filteredDepartments: any[] = [];
 
   searchText = "";
   page = 1;
-  pageSize = 2;
+  pageSize = 5;
+
+  totalPages = 1;
+  totalItems = 0;
 
   constructor(
     private service: DepartmentService,
@@ -30,21 +32,20 @@ export class DepartmentListComponent implements OnInit {
     this.getData();
   }
 
+  // Load Data From Backend with Pagination + Search
   getData() {
-    this.service.getAll().subscribe(res => {
-      this.departments = res;
-      this.filteredDepartments = res;
-    });
+    this.service.getPaged(this.page, this.pageSize, this.searchText)
+      .subscribe((res: any) => {
+        this.departments = res.items;
+        this.totalPages = res.totalPages;
+        this.totalItems = res.totalItems;
+      });
   }
 
+  // Search
   filterDepartments() {
-    const text = this.searchText.toLowerCase();
-
-    this.filteredDepartments = this.departments.filter(dep =>
-      dep.name.toLowerCase().includes(text)
-    );
-
     this.page = 1;
+    this.getData();
   }
 
   create() {
@@ -64,13 +65,17 @@ export class DepartmentListComponent implements OnInit {
   }
 
   // Pagination
-  get paginatedDepartments() {
-    const start = (this.page - 1) * this.pageSize;
-    return this.filteredDepartments.slice(start, start + this.pageSize);
+  nextPage() {
+    if (this.page < this.totalPages) {
+      this.page++;
+      this.getData();
+    }
   }
 
-  get totalPages() {
-    return Math.ceil(this.filteredDepartments.length / this.pageSize);
+  prevPage() {
+    if (this.page > 1) {
+      this.page--;
+      this.getData();
+    }
   }
-
 }
