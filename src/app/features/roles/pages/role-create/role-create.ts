@@ -6,9 +6,10 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-role-create',
-  imports: [CommonModule,FormsModule],
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   templateUrl: './role-create.html',
-  styleUrl: './role-create.css',
+  styleUrls: ['./role-create.css'],
 })
 export class RoleCreate {
   roleName = '';
@@ -16,35 +17,37 @@ export class RoleCreate {
   constructor(private http: HttpClient, private router: Router) {}
 
   save(form: any) {
-  if (form.invalid) return;
 
-  const body = { name: this.roleName };
+    // 🔥 SHOW POPUP WHEN EMPTY
+    if (form.invalid) {
+      alert("Please enter role name");
+      return;
+    }
 
-  this.http.post('http://localhost:5093/api/Roles/create', body)
-    .subscribe({
-      next: () => {
-        alert("Role created!");
-        this.router.navigate(['/roles']);
-      },
+    const body = { name: this.roleName };
 
-      error: (err) => {
-        const msg =
-          (err.error?.message ||
-           err.error?.detail ||
-           err.error?.title ||
-           err.error ||
-           "")
-            .toString()
-            .toLowerCase();
+    this.http.post('http://localhost:5093/api/Roles/create', body)
+      .subscribe({
+        next: () => {
+          alert("Role created successfully!");
+          this.router.navigate(['/roles']);
+        },
 
-        if (msg.includes("exists"))
-          alert("Role already exists!");
+        error: (err) => {
+          const msg =
+            (err.error?.message ||
+             err.error?.detail ||
+             err.error?.title ||
+             err.error ||
+             "")
+              .toString()
+              .toLowerCase();
 
-        else
-          alert("Failed to create role");
-      }
-    });
-}
-
-
+          if (msg.includes("exists"))
+            alert("Role already exists!");
+          else
+            alert("Failed to create role");
+        }
+      });
+  }
 }

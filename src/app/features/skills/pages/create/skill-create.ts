@@ -18,31 +18,33 @@ export class SkillCreateComponent {
   constructor(private service: SkillsService, private router: Router) {}
 
   save(form: any) {
-  if (form.invalid) return;
 
-  this.service.create(this.model).subscribe({
-    next: () => {
-      alert("Skill created!");
-      this.router.navigate(['/skills']);
-    },
-
-    error: (err) => {
-      const msg =
-        (err.error?.message ||
-         err.error?.detail ||
-         err.error?.title ||
-         err.error ||
-         "")
-          .toString()
-          .toLowerCase();
-
-      if (msg.includes("name")) {
-        alert("Skill name already exists!");
-      } else {
-        alert("Failed to create skill");
-      }
+    // 🔥 ONLY popup alert (same as department)
+    if (form.invalid) {
+      alert("Please enter skill name");
+      return;
     }
-  });
-}
 
+    this.service.create(this.model).subscribe({
+      next: () => {
+        alert("Skill created successfully!");
+        this.router.navigate(['/skills']);
+      },
+
+      error: (err) => {
+        const msg =
+          (err.error?.message ||
+           err.error?.detail ||
+           err.error?.title ||
+           err.error ||
+           "").toString().toLowerCase();
+
+        if (msg.includes("exists")) {
+          alert("Skill name already exists!");
+        } else {
+          alert("Failed to create skill");
+        }
+      }
+    });
+  }
 }

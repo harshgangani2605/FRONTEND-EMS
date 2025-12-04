@@ -44,13 +44,13 @@ export class EmployeeCreateComponent {
 
   loadDepartments() {
     this.api.get('departments').subscribe((res: any) => {
-      this.departments = res;
+      this.departments = res.items ?? res;
     });
   }
 
   loadSkills() {
     this.api.get('skills').subscribe((res: any) => {
-      this.skills = res;
+      this.skills = res.items ?? res;
     });
   }
 

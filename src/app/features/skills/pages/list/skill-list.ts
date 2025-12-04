@@ -21,7 +21,7 @@ export class SkillListComponent implements OnInit {
 
   // Backend pagination
   page = 1;
-  pageSize = 4;
+  pageSize = 10;
 
   totalItems = 0;
   totalPages = 0;

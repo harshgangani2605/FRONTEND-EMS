@@ -21,7 +21,7 @@ export class EmployeeListComponent implements OnInit {
   // Search + Pagination
   searchText: string = "";
   page = 1;
-  pageSize = 2;
+  pageSize = 10;
   totalItems = 0;
 
   constructor(

@@ -29,10 +29,11 @@ export class UserCreateComponent implements OnInit {
   }
 
   loadRoles() {
-    this.api.get("Roles").subscribe((res: any) => {
-      this.roles = res;
-    });
-  }
+  this.api.get("Roles/paged").subscribe((res: any) => {
+    this.roles = Array.isArray(res) ? res : res.items ?? [];
+  });
+}
+
 
   save(form: any) {
     if (form.invalid) return;

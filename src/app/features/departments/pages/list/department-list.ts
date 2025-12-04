@@ -18,7 +18,7 @@ export class DepartmentListComponent implements OnInit {
 
   searchText = "";
   page = 1;
-  pageSize = 5;
+  pageSize = 10;
 
   totalPages = 1;
   totalItems = 0;

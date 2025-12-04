@@ -39,11 +39,13 @@ export class UserEditComponent implements OnInit {
   }
 
   loadRoles() {
-    this.http.get<any[]>("http://localhost:5093/api/roles")
-      .subscribe(res => {
-        this.roles = res;
-      });
-  }
+  this.http.get<any>("http://localhost:5093/api/Roles/paged")
+    .subscribe(res => {
+      this.roles = Array.isArray(res) ? res : res.items; 
+      // Handles both: [..] or { items: [...] }
+    });
+}
+
 
   loadUser(email: string) {
     this.service.getUserByEmail(email).subscribe({
