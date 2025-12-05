@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DepartmentService } from '../../services/department.service';
 import { HasPermissionDirective } from '../../../../shared/directives/has-permission.directive';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-department-list',
@@ -57,12 +58,34 @@ export class DepartmentListComponent implements OnInit {
   }
 
   delete(id: number) {
-    if (!confirm("Are you sure?")) return;
+  Swal.fire({
+    title: 'Are you sure?',
+    text: 'This department will be permanently deleted!',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#3085d6',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, delete it!'
+  }).then((result) => {
+    if (result.isConfirmed) {
 
-    this.service.delete(id).subscribe(() => {
-      this.getData();
-    });
-  }
+      this.service.delete(id).subscribe(() => {
+        
+        Swal.fire({
+          icon: 'success',
+          title: 'Deleted!',
+          text: 'Department has been removed.',
+          timer: 1500,
+          showConfirmButton: false
+        });
+
+        this.getData();
+      });
+
+    }
+  });
+}
+
 
   // Pagination
   nextPage() {

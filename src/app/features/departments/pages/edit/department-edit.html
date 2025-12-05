@@ -2,9 +2,11 @@
   <h2>Edit Department</h2>
 
   <form #form="ngForm" (ngSubmit)="update(form)">
-    
-    <label>Department Name</label>
+
+    <label>Department Name<span class=required>*</span></label>
     <input type="text" name="name" [(ngModel)]="model.name" required />
+
+    <span class="error" *ngIf="errors.name">{{ errors.name }}</span>
 
     <button class="save-btn" type="submit">Update</button>
 

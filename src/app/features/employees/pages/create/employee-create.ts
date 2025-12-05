@@ -5,7 +5,7 @@ import { EmployeeService } from '../../services/employee.service';
 import { ApiService } from '../../../../core/services/api.service';
 import { Router } from '@angular/router';
 import { HasPermissionDirective } from '../../../../shared/directives/has-permission.directive';
-
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-employee-create',
   standalone: true,
@@ -17,8 +17,7 @@ export class EmployeeCreateComponent {
 
   departments: any[] = [];
   skills: any[] = [];
-
-  // Validation rules
+  error: string = "";
   nameMinLength = 3;
   today = new Date().toISOString().split('T')[0];
 
@@ -62,72 +61,123 @@ export class EmployeeCreateComponent {
     }
   }
 
- save(form: NgForm) {
+  save(form: NgForm) {
 
-  // Required validation
+  this.error = "";
+
+  // Angular required validation
   if (form.invalid) {
-    alert("Please fill all required fields");
+    Swal.fire({
+      icon: 'warning',
+      title: 'Validation Error',
+      text: 'Please fill all required fields'
+    });
     return;
   }
 
-  // Name validation
+  // Full name trim validation
   if (this.employee.fullName.trim().length < this.nameMinLength) {
-    alert("Full Name must be at least " + this.nameMinLength + " characters long");
+    Swal.fire({
+      icon: 'warning',
+      title: 'Invalid Name',
+      text: `Full Name must be at least ${this.nameMinLength} characters long`
+    });
     return;
   }
 
-  // Email format validation
+  // Email validation
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(this.employee.email)) {
-    alert("Please enter a valid email address");
+    Swal.fire({
+      icon: 'warning',
+      title: 'Invalid Email',
+      text: 'Please enter a valid email address'
+    });
     return;
   }
 
   // Salary validation
   if (this.employee.salary < 0) {
-    alert("Salary cannot be negative");
+    Swal.fire({
+      icon: 'warning',
+      title: 'Invalid Salary',
+      text: 'Salary cannot be negative'
+    });
     return;
   }
 
   // Date validation
   if (this.employee.joinedOn > this.today) {
-    alert("Joined date cannot be in the future");
+    Swal.fire({
+      icon: 'warning',
+      title: 'Invalid Date',
+      text: 'Joined date cannot be in the future'
+    });
     return;
   }
 
-  // Submit
+  // Skills required
+  if (this.employee.skillIds.length === 0) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Skills Required',
+      text: 'Please select at least one skill'
+    });
+    return;
+  }
+
+  // API CALL
   this.empService.createEmployee(this.employee).subscribe({
+
     next: () => {
-      alert("Employee created successfully!");
-      this.router.navigate(['/employees']);
+      Swal.fire({
+        icon: 'success',
+        title: 'Employee Created!',
+        text: 'The employee has been added successfully.',
+        showConfirmButton: false,
+        timer: 1500
+      });
+
+      setTimeout(() => {
+        this.router.navigate(['/employees']);
+      }, 1500);
     },
 
     error: (err) => {
-      // Universal backend error extraction
-      const backendMsg =
-        (err.error?.message ||
-         err.error?.detail ||
-         err.error?.title ||
-         err.error ||
-         err.Message ||
-         err.statusText ||
-         "")
-          .toString()
-          .toLowerCase();
+      const backendMsg = (
+        err.error?.message ||
+        err.error?.detail ||
+        err.error?.title ||
+        err.error ||
+        err.statusText ||
+        ""
+      ).toString().toLowerCase();
 
-      console.log("BACKEND ERROR:", backendMsg);
+      if (backendMsg.includes("email")) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Duplicate Email',
+          text: 'Email already exists. Use a different one.'
+        });
+        return;
+      }
 
-      if (backendMsg.includes("email"))
-        alert("Email already exists!");
+      if (backendMsg.includes("name")) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Duplicate Name',
+          text: 'Employee name already exists.'
+        });
+        return;
+      }
 
-      else if (backendMsg.includes("name"))
-        alert("Employee name already exists!");
-
-      else
-        alert("Failed to create employee");
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Failed to create employee.'
+      });
     }
   });
 }
-
 
 }

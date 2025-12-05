@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HasPermissionDirective } from '../../../../shared/directives/has-permission.directive';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
-
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-user-list',
   standalone: true,
@@ -61,12 +61,34 @@ export class UserListComponent implements OnInit {
 
   // DELETE USER
   deleteUser(email: string) {
-    if (!confirm("Are you sure to delete this user?")) return;
 
-    this.service.deleteUser(email).subscribe(() => {
-      this.loadUsers();
-    });
-  }
+  Swal.fire({
+    title: "Are you sure?",
+    text: "This action will permanently delete this user.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#6b7280",
+    confirmButtonText: "Yes, delete",
+    cancelButtonText: "Cancel"
+  }).then((result) => {
+    if (result.isConfirmed) {
+
+      this.service.deleteUser(email).subscribe(() => {
+
+        Swal.fire({
+          icon: "success",
+          title: "Deleted!",
+          text: "User has been removed.",
+          confirmButtonColor: "#374151"
+        });
+
+        this.loadUsers();
+      });
+
+    }
+  });
+}
 
   // PAGINATION BUTTONS
   prevPage() {

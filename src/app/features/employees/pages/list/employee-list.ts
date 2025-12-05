@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { EmployeeService } from '../../services/employee.service';
 import { HasPermissionDirective } from '../../../../shared/directives/has-permission.directive';
 import { FormsModule } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-employee-list',
@@ -18,7 +19,6 @@ export class EmployeeListComponent implements OnInit {
   loading = true;
   Math = Math;
 
-  // Search + Pagination
   searchText: string = "";
   page = 1;
   pageSize = 10;
@@ -33,14 +33,13 @@ export class EmployeeListComponent implements OnInit {
     this.loadData();
   }
 
-  // 🔄 Load paginated data from backend
   loadData() {
     this.loading = true;
 
     this.service.getPaged(this.page, this.pageSize, this.searchText)
       .subscribe({
         next: (res: any) => {
-          this.employees = res.items;  // data
+          this.employees = res.items;
           this.totalItems = res.totalItems;
           this.loading = false;
         },
@@ -50,13 +49,11 @@ export class EmployeeListComponent implements OnInit {
       });
   }
 
-  // 🔍 Search function
   onSearch() {
     this.page = 1;
     this.loadData();
   }
 
-  // Page navigation
   nextPage() {
     if (this.page * this.pageSize < this.totalItems) {
       this.page++;
@@ -79,11 +76,30 @@ export class EmployeeListComponent implements OnInit {
     this.router.navigate(['/employees/create']);
   }
 
+  // NEW SWEETALERT DELETE FUNCTION
   delete(id: number) {
-    if (!confirm("Are you sure you want to delete this employee?")) return;
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "This employee will be deleted permanently!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.service.delete(id).subscribe(() => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Deleted!',
+            text: 'Employee has been removed.',
+            timer: 1500,
+            showConfirmButton: false
+          });
 
-    this.service.delete(id).subscribe(() => {
-      this.loadData();
+          this.loadData();
+        });
+      }
     });
   }
 

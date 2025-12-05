@@ -2,10 +2,24 @@
   <h2>Add Skill</h2>
 
   <form #form="ngForm" (ngSubmit)="save(form)">
+    
     <div class="form-group">
-      <label>Skill Name</label>
-      <input type="text" name="name" [(ngModel)]="model.name" required />
+      <label>Skill Name <span class="required">*</span></label>
+
+      <input 
+        type="text" 
+        name="name"
+        [(ngModel)]="model.name"
+        required
+        #nameRef="ngModel"
+      />
+
+      <!-- INLINE ERROR BELOW INPUT -->
+      <span class="error" *ngIf="errors.name">{{ errors.name }}</span>
     </div>
+
+    <!-- FORM ERROR (if backend fails) -->
+    <span class="error" *ngIf="errors.form">{{ errors.form }}</span>
 
     <button class="save-btn" type="submit">Save Skill</button>
   </form>

@@ -1,5 +1,12 @@
 /* ===========================================
-   FORM CONTAINER (Card Style)
+   GLOBAL BOX SIZING
+=========================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* ===========================================
+   FORM CONTAINER
 =========================================== */
 .form-container {
   background: #ffffff;
@@ -9,35 +16,41 @@
   max-width: 550px;
   margin: 40px auto;
   border: 1px solid #e5e7eb;
-  box-sizing: border-box;
 }
 
 /* Title */
 .form-container h2 {
-  margin: 0 0 20px 0;
+  text-align: center;
+  margin-bottom: 25px;
   font-size: 24px;
   font-weight: 700;
   color: #1f2937;
-  text-align: center;
 }
 
 /* ===========================================
-   INPUT FIELDS
+   INPUT GROUP
 =========================================== */
 .form-group {
-  margin-bottom: 18px;
+  margin-bottom: 20px;
   display: flex;
   flex-direction: column;
 }
 
-.form-group label {
-  font-size: 14px;
+label {
+  font-size: 20px;
   font-weight: 600;
   color: #374151;
   margin-bottom: 8px;
 }
+.error{
+  color:red
+}
+.required {
+  color: red;
+}
 
-.form-group input {
+/* Input */
+input[type="text"] {
   padding: 12px 14px;
   border-radius: 10px;
   border: 1px solid #d1d5db;
@@ -46,11 +59,21 @@
   transition: 0.25s;
 }
 
-.form-group input:focus {
+input[type="text"]:focus {
   border-color: #4F46E5;
   background: #ffffff;
   outline: none;
   box-shadow: 0 0 6px rgba(79,70,229,0.25);
+}
+
+/* ===========================================
+   ERROR MESSAGE (inline)
+=========================================== */
+.error {
+  margin-top: 6px;
+  color: #dc2626;
+  font-size: 13px;
+  font-weight: 500;
 }
 
 /* ===========================================
@@ -76,7 +99,7 @@
 }
 
 /* ===========================================
-   RESPONSIVE FOR ALL DEVICES
+   RESPONSIVENESS
 =========================================== */
 @media (max-width: 600px) {
   .form-container {
@@ -91,7 +114,7 @@
 }
 
 @media (max-width: 400px) {
-  .form-group input {
+  input[type="text"] {
     font-size: 14px;
     padding: 10px;
   }

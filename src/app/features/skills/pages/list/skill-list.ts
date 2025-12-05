@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SkillsService } from '../../services/skills.service';
 import { HasPermissionDirective } from '../../../../shared/directives/has-permission.directive';
-
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-skill-list',
   standalone: true,
@@ -64,12 +64,36 @@ export class SkillListComponent implements OnInit {
   }
 
   // 🗑 Delete
-  delete(id: number) {
-    if (!confirm("Delete this skill?")) return;
+   delete(id: number) {
 
-    this.service.delete(id).subscribe(() => {
-      this.getSkills();
+    Swal.fire({
+      title: 'Delete Skill?',
+      text: 'Are you sure you want to delete this skill?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#374151',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, Delete'
+    }).then((result) => {
+
+      if (result.isConfirmed) {
+        
+        this.service.delete(id).subscribe(() => {
+
+          Swal.fire({
+            icon: 'success',
+            title: 'Deleted!',
+            text: 'Skill deleted successfully.',
+            confirmButtonColor: '#374151',
+            timer: 1500
+          });
+
+          this.getSkills();
+        });
+      }
+
     });
+
   }
 
   // Pagination click

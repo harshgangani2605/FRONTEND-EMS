@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { SkillsService } from '../../services/skills.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-skill-create',
@@ -14,35 +15,52 @@ import { SkillsService } from '../../services/skills.service';
 export class SkillCreateComponent {
 
   model = { name: '' };
+  errors: any = {};   
 
   constructor(private service: SkillsService, private router: Router) {}
 
-  save(form: any) {
+  save(form: NgForm) {
 
-    // 🔥 ONLY popup alert (same as department)
+    this.errors = {};
+
+    // Required
     if (form.invalid) {
-      alert("Please enter skill name");
+      this.errors.name = "Skill name is required";
       return;
     }
 
+    // Avoid only spaces & minimum length 2
+    if (this.model.name.trim().length < 2) {
+      this.errors.name = "Skill name must be at least 2 characters";
+      return;
+    }
+
+    // API CALL
     this.service.create(this.model).subscribe({
+
       next: () => {
-        alert("Skill created successfully!");
-        this.router.navigate(['/skills']);
+        Swal.fire({
+          icon: 'success',
+          title: 'Created!',
+          text: 'Skill created successfully.',
+          confirmButtonColor: '#374151'
+        }).then(() => {
+          this.router.navigate(['/skills']);
+        });
       },
 
       error: (err) => {
-        const msg =
-          (err.error?.message ||
-           err.error?.detail ||
-           err.error?.title ||
-           err.error ||
-           "").toString().toLowerCase();
+        const msg = (
+          err.error?.message ||
+          err.error?.detail ||
+          err.error?.title ||
+          ""
+        ).toString().toLowerCase();
 
         if (msg.includes("exists")) {
-          alert("Skill name already exists!");
+          this.errors.name = "Skill name already exists!";
         } else {
-          alert("Failed to create skill");
+          this.errors.form = "Failed to create skill";
         }
       }
     });

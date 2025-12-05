@@ -8,7 +8,12 @@
   box-shadow: 0 6px 20px rgba(0,0,0,0.06);
   margin: 25px auto;
   max-width: 1300px;
+ max-height:1300px;
   border: 1px solid #e5e7eb;
+}
+.pagination button:disabled {
+  background: #9CA3AF !important;
+  cursor: not-allowed;
 }
 
 /* ===========================================
@@ -20,6 +25,7 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 12px;
+  margin-bottom:18px;
 }
 
 .header-actions {
@@ -28,13 +34,25 @@
   flex-wrap: wrap;
 }
 
+/* ===========================================
+   SEARCH INPUT
+=========================================== */
 .search-input {
   padding: 10px 14px;
   width: 220px;
-  height: 35px;
+  max-width: 100%;
   border-radius: 8px;
   border: 1px solid #d1d5db;
   background: #f9fafb;
+  font-size: 14px;
+  transition: 0.25s;
+}
+
+.search-input:focus {
+  border-color: #4F46E5;
+  background: white;
+  box-shadow: 0 0 6px rgba(79,70,229,0.25);
+  outline: none;
 }
 
 /* ===========================================
@@ -43,12 +61,14 @@
 .add-btn {
   background: #374151;
   color: white;
-  padding: 10px 20px 5px 5;
+  padding: 10px 20px;
   border-radius: 8px;
   border: none;
   cursor: pointer;
+  font-size: 15px;
   font-weight: 500;
-  height: 35px;
+  transition: 0.25s;
+  white-space: nowrap;
 }
 
 .add-btn:hover {

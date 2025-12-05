@@ -2,11 +2,23 @@
   <h2>Edit Skill</h2>
 
   <form #form="ngForm" (ngSubmit)="update(form)">
+
     <div class="form-group">
-      <label>Skill Name</label>
-      <input type="text" name="name" [(ngModel)]="model.name" required />
+      <label>Skill Name <span class="required">*</span></label>
+
+      <input type="text"
+             name="name"
+             [(ngModel)]="model.name"
+             required />
+
+      <!-- INLINE ERROR BELOW INPUT -->
+      <span class="error" *ngIf="errors.name">{{ errors.name }}</span>
+
+      <!-- FORM ERROR -->
+      <span class="error" *ngIf="errors.form">{{ errors.form }}</span>
     </div>
 
     <button class="save-btn" type="submit">Update Skill</button>
+
   </form>
 </div>

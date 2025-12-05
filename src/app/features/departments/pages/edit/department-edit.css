@@ -1,51 +1,111 @@
+/* Perfect CSS for the Form Component */
+/* Universal box-sizing for consistent spacing */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* Form Container */
 .form-container {
-  background: #fff;
-  padding: 25px;
-  width: 430px;
-  margin: 20px auto;
+  background: #ffffff;
+  padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  margin: 20px auto; /* Center the form on larger screens */
+  display: flex;
+  flex-direction: column;
 }
 
-h2 {
-  margin-bottom: 15px;
-  font-weight: 600;
+/* Form Title */
+.form-container h2 {
   text-align: center;
+  margin-bottom: 25px;
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
 }
 
+/* Form Styling */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Label Styling */
 label {
   font-weight: 500;
+  font-size: 22px;
+  color: #555;
+  margin-bottom: -10px; /* Adjust spacing between label and input */
 }
 
-input {
+/* Input Field Styling */
+input[type="text"] {
   width: 100%;
-  padding: 10px;
-  margin: 6px 0 18px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 14px;
+  padding: 12px 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* Focus and hover states for input */
+input[type="text"]:focus {
+  outline: none;
+  border-color: #374151;
+  box-shadow: 0 0 0 3px rgba(45, 108, 223, 0.2);
+}
+
+/* Disabled input state */
+input[type="text"]:disabled {
+  background-color: #f9f9f9;
+  cursor: not-allowed;
+}
+
+/* Save Button */
 .save-btn {
-  width: 100%;
   background: #374151;
-  padding: 10px;
   color: white;
-  border-radius: 6px;
+  padding: 12px 20px;
   border: none;
-  font-size: 15px;
+  border-radius: 8px;
   cursor: pointer;
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 10px; /* Space between input and button */
 }
 
+/* Save Button hover and active states */
 .save-btn:hover {
   background: #374151;
+  transform: translateY(-2px);
 }
 
-/* Mobile Responsive */
-@media(max-width: 500px) {
+.save-btn:active {
+  transform: translateY(0);
+}
+.error{
+  color:red
+}
+.required{
+  color:red
+}
+
+/* Media query for smaller devices */
+@media (max-width: 600px) {
   .form-container {
-    width: 95%;
     padding: 20px;
+    margin: 15px; /* Add some margin on all sides */
+  }
+
+  .form-container h2 {
+    font-size: 20px;
+  }
+
+  .save-btn {
+    width: 100%; /* Make button full width */
   }
 }
