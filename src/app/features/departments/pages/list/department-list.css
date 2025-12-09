@@ -60,6 +60,19 @@
   box-shadow: 0 0 6px rgba(79,70,229,0.25);
   outline: none;
 }
+/* center actions */
+.actions-header {
+  width: 200px;
+  text-align: center !important;
+}
+
+/* same button style as employees */
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
 
 /* ===========================================
    ADD BUTTON

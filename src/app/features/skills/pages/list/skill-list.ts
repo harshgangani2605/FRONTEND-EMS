@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { SkillsService } from '../../services/skills.service';
 import { HasPermissionDirective } from '../../../../shared/directives/has-permission.directive';
+import { PermissionService } from '../../../../core/services/permission.service';
 import Swal from 'sweetalert2';
 @Component({
   selector: 'app-skill-list',
@@ -28,7 +29,8 @@ export class SkillListComponent implements OnInit {
 
   constructor(
     private service: SkillsService,
-    private router: Router
+    private router: Router,
+    private permissionService: PermissionService 
   ) {}
 
   ngOnInit() {
@@ -62,39 +64,56 @@ export class SkillListComponent implements OnInit {
   edit(id: number) {
     this.router.navigate(['/skills/edit', id]);
   }
+  
+  hasAnyActionPermission(): boolean {
+    return this.permissionService.has('skill.edit') ||
+           this.permissionService.has('skill.delete');
+  }
 
   // 🗑 Delete
-   delete(id: number) {
+  delete(id: number) {
 
-    Swal.fire({
-      title: 'Delete Skill?',
-      text: 'Are you sure you want to delete this skill?',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#374151',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, Delete'
-    }).then((result) => {
+  Swal.fire({
+    title: 'Delete Skill?',
+    text: 'Are you sure you want to delete this skill?',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#374151',
+    cancelButtonColor: '#d33',
+    confirmButtonText: 'Yes, Delete'
+  }).then((result) => {
 
-      if (result.isConfirmed) {
-        
-        this.service.delete(id).subscribe(() => {
+    if (!result.isConfirmed) return;  // <--- exit safely
 
-          Swal.fire({
-            icon: 'success',
-            title: 'Deleted!',
-            text: 'Skill deleted successfully.',
-            confirmButtonColor: '#374151',
-            timer: 1500
-          });
+    this.service.delete(id).subscribe({
 
-          this.getSkills();
+      next: () => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Deleted!',
+          text: 'Skill deleted successfully.',
+          confirmButtonColor: '#374151',
+          timer: 1500
+        });
+
+        this.getSkills();
+      },
+
+      // ⭐ IMPORTANT: shows backend error message
+      error: (err) => {
+        Swal.fire({
+          icon: "error",
+          title: "Cannot delete",
+          text: err.error?.message || "Something went wrong",
         });
       }
 
     });
 
-  }
+  });
+
+}
+
 
   // Pagination click
   nextPage() {
@@ -110,4 +129,8 @@ export class SkillListComponent implements OnInit {
       this.getSkills();
     }
   }
+  get isAdmin(): boolean {
+  return this.permissionService.has('admin');
+}
+
 }

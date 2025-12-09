@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2';
 
 @Component({
     imports: [CommonModule], 
@@ -48,22 +49,34 @@ export class RoleManageComponent implements OnInit {
   }
 
   save() {
-    const body = {
-      roleId: this.roleId,
-      permissionIds: this.selectedPermissions,
-      
-    };
 
-   this.http.post('http://localhost:5093/api/roles/assign-permissions', body)
-  .subscribe({
-    next: (res) => {
-      alert("Permissions saved successfully!");
-        this.router.navigate(['/roles']);
-    },
-    error: (err) => {
-      console.log("Error", err);
-    }
-  });
+  const body = {
+    roleId: this.roleId,
+    permissionIds: this.selectedPermissions,
+  };
 
-  }
+  this.http.post('http://localhost:5093/api/roles/assign-permissions', body)
+    .subscribe({
+
+      next: () => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Permissions saved successfully!',
+          confirmButtonText: 'OK'
+        }).then(() => {
+          this.router.navigate(['/roles']);
+        });
+      },
+
+      error: () => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Failed!',
+          text: 'Something went wrong!'
+        });
+      }
+    });
+}
+
 }

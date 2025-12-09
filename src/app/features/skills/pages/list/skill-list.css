@@ -172,10 +172,53 @@
   color: #374151;
 }
 
+.actions-header {
+  width: 200px;
+  text-align: center !important;
+}
+
+/* same button style as employees */
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+
 /* ===========================================
    RESPONSIVE
 =========================================== */
+@media (max-width: 1024px) {
+  .search-input {
+    width: 200px;
+  }
+}
+
+/* Tablets */
+@media (max-width: 768px) {
+  .header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .header-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .search-input {
+    width: 60%;
+  }
+
+  .add-btn {
+    width: auto;
+  }
+}
+
+/* Mobile - Compact Layout */
 @media (max-width: 600px) {
+
   .header-actions {
     flex-direction: column;
     width: 100%;
@@ -184,5 +227,38 @@
   .search-input,
   .add-btn {
     width: 100%;
+  }
+}
+
+/* Very Small Phones (≤400px) */
+@media (max-width: 400px) {
+  .department-table {
+    min-width: 0;
+    font-size: 12px;
+  }
+
+  th, td {
+    padding: 10px;
+  }
+
+  .btn-edit, .btn-delete {
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+}
+
+/* Ultra Small Screens (≤330px) */
+@media (max-width: 330px) {
+  .header-row h2 {
+    font-size: 20px;
+  }
+
+  .btn-edit, .btn-delete {
+    padding: 5px 10px;
+    font-size: 10px;
+  }
+
+  .search-input {
+    font-size: 12px;
   }
 }

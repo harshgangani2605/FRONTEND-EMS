@@ -5,6 +5,8 @@ import { HasPermissionDirective } from '../../../../shared/directives/has-permis
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import Swal from 'sweetalert2';
+import { PermissionService } from '../../../../core/services/permission.service';
+
 @Component({
   selector: 'app-user-list',
   standalone: true,
@@ -24,9 +26,10 @@ export class UserListComponent implements OnInit {
   totalItems = 0;
   totalPages = 1;
 
-  constructor(private service: UserService, private router: Router) {}
+  constructor(private service: UserService, private router: Router, private permissionService: PermissionService ) {}
 
   ngOnInit() {
+    this.permissionService.load().subscribe();
     this.loadUsers();
   }
 
@@ -42,6 +45,10 @@ export class UserListComponent implements OnInit {
         this.loading = false;
       });
   }
+  hasAnyActionPermission(): boolean {
+  return this.permissionService.has('user.edit') ||
+         this.permissionService.has('user.delete');
+}
 
   // SEARCH
   onSearch() {

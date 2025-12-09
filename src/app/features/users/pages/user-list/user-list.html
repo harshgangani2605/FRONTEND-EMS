@@ -31,45 +31,54 @@
     <table *ngIf="!loading && users.length" class="department-table">
 
       <thead>
-        <tr>
-          <th>#</th>
-          <th>Full Name</th>
-          <th>Email</th>
-          <th>Roles</th>
+  <tr>
+    <th>#</th>
+    <th>Full Name</th>
+    <th>Email</th>
+    <th>Roles</th>
 
-          <th *hasPermission="'user.edit'"></th>
-          <th *hasPermission="'user.delete'"></th>
-        </tr>
-      </thead>
+    <!-- SINGLE ACTION COLUMN -->
+    <th *ngIf="hasAnyActionPermission()" class="actions-header">
+      Actions
+    </th>
+  </tr>
+</thead>
 
-      <tbody>
+<tbody>
+  <tr *ngFor="let u of users; let i = index">
+    <td>{{ (page - 1) * pageSize + i + 1 }}</td>
+    <td>{{ u.fullName || '-' }}</td>
+    <td>{{ u.email }}</td>
 
-        <tr *ngFor="let u of users; let i = index">
+    <td>
+      <div class="role-wrap">
+        <span class="role-chip" *ngFor="let r of u.roles">
+          {{ r }}
+        </span>
+      </div>
+    </td>
 
-          <td>{{ (page - 1) * pageSize + i + 1 }}</td>
+    <!-- SINGLE CELL -->
+    <td *ngIf="hasAnyActionPermission()" class="action-buttons">
 
-          <td>{{ u.fullName || '-' }}</td>
-          <td>{{ u.email }}</td>
+      <button
+        class="edit-btn"
+        *hasPermission="'user.edit'"
+        (click)="goEdit(u.email)">
+        Edit
+      </button>
 
-          <td>
-            <div class="role-wrap">
-              <span class="role-chip" *ngFor="let r of u.roles">
-                {{ r }}
-              </span>
-            </div>
-          </td>
+      <button
+        class="delete-btn"
+        *hasPermission="'user.delete'"
+        (click)="deleteUser(u.email)">
+        Delete
+      </button>
 
-          <td *hasPermission="'user.edit'" class="action-buttons">
-            <button class="edit-btn" (click)="goEdit(u.email)">Edit</button>
-          </td>
+    </td>
+  </tr>
+</tbody>
 
-          <td *hasPermission="'user.delete'" class="action-buttons">
-            <button class="delete-btn" (click)="deleteUser(u.email)">Delete</button>
-          </td>
-
-        </tr>
-
-      </tbody>
 
     </table>
 

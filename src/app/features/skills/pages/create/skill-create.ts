@@ -19,50 +19,64 @@ export class SkillCreateComponent {
 
   constructor(private service: SkillsService, private router: Router) {}
 
-  save(form: NgForm) {
+ save(form: NgForm) {
 
-    this.errors = {};
+  this.errors = {};
 
-    // Required
-    if (form.invalid) {
-      this.errors.name = "Skill name is required";
-      return;
-    }
-
-    // Avoid only spaces & minimum length 2
-    if (this.model.name.trim().length < 2) {
-      this.errors.name = "Skill name must be at least 2 characters";
-      return;
-    }
-
-    // API CALL
-    this.service.create(this.model).subscribe({
-
-      next: () => {
-        Swal.fire({
-          icon: 'success',
-          title: 'Created!',
-          text: 'Skill created successfully.',
-          confirmButtonColor: '#374151'
-        }).then(() => {
-          this.router.navigate(['/skills']);
-        });
-      },
-
-      error: (err) => {
-        const msg = (
-          err.error?.message ||
-          err.error?.detail ||
-          err.error?.title ||
-          ""
-        ).toString().toLowerCase();
-
-        if (msg.includes("exists")) {
-          this.errors.name = "Skill name already exists!";
-        } else {
-          this.errors.form = "Failed to create skill";
-        }
-      }
-    });
+  if (form.invalid) {
+    form.control.markAllAsTouched();
+    this.errors.name = "Skill name is required";
+    return;
   }
+
+  if (this.model.name.trim().length < 2) {
+    this.errors.name = "Skill name must be at least 2 characters";
+    return;
+  }
+
+  this.service.create(this.model).subscribe({
+
+    next: () => {
+      Swal.fire({
+        icon: 'success',
+        title: 'Created!',
+        text: 'Skill created successfully',
+        confirmButtonColor: '#374151'
+      }).then(() => {
+        this.router.navigate(['/skills']);
+      });
+    },
+
+    error: (err) => {
+      const msg = (
+        err.error?.message ||
+        err.error?.detail ||
+        err.error?.title ||
+        ""
+      ).toString().toLowerCase();
+
+      if (msg.includes("exists")) {
+        this.errors.name = "Skill name already exists!";
+
+        Swal.fire({
+          icon: 'error',
+          title: 'Duplicate Skill Name',
+          text: 'This skill already exists!',
+          confirmButtonColor: '#d33'
+        });
+
+      } else {
+        this.errors.form = "Failed to create skill";
+
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Failed to create skill',
+          confirmButtonColor: '#d33'
+        });
+      }
+    }
+  });
+}
+
 }

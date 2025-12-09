@@ -4,12 +4,15 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ApiService } from '../../../../core/services/api.service';
 
+import Swal from 'sweetalert2';   // <--- ADD THIS
+
+
 @Component({
   selector: 'app-user-create',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './user-create.html',
-  styleUrls: ['./user-create.css']   // 🔥 FIXED: should be styleUrls
+  styleUrls: ['./user-create.css']
 })
 export class UserCreateComponent implements OnInit {
 
@@ -29,23 +32,32 @@ export class UserCreateComponent implements OnInit {
   }
 
   loadRoles() {
-  this.api.get("Roles/paged").subscribe((res: any) => {
-    this.roles = Array.isArray(res) ? res : res.items ?? [];
-  });
-}
+    this.api.get("Roles/paged").subscribe((res: any) => {
+      this.roles = Array.isArray(res) ? res : res.items ?? [];
+    });
+  }
 
 
   save(form: any) {
     if (form.invalid) return;
 
     this.api.post('Admin/create-user', this.model).subscribe({
+
       next: () => {
-        alert('User created successfully!');
-        this.router.navigate(['/users']);
+
+        Swal.fire({
+          title: "User Created!",
+          text: "User added successfully.",
+          icon: "success",
+          confirmButtonText: "OK"
+        }).then(() => {
+          this.router.navigate(['/users']);
+        });
+
       },
 
       error: (err) => {
-        // 🔥 Universal backend error extraction
+
         const msg =
           (err.error?.message ||
            err.error?.detail ||
@@ -57,11 +69,22 @@ export class UserCreateComponent implements OnInit {
 
         console.log("USER CREATE ERROR:", msg);
 
-        if (msg.includes("exists") || msg.includes("already"))
-          alert("User already exists! Please use a different email.");
-        else
-          alert("Failed to create user.");
+        if (msg.includes("exists") || msg.includes("already")) {
+          Swal.fire({
+            title: "Already exists",
+            text: "Email already registered!",
+            icon: "error"
+          });
+        }
+        else {
+          Swal.fire({
+            title: "Failed!",
+            text: "Failed to create user.",
+            icon: "error"
+          });
+        }
       }
+
     });
   }
 }

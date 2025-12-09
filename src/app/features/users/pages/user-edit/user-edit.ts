@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { HttpClient } from '@angular/common/http';
+import Swal from 'sweetalert2';
+
 
 @Component({
   standalone: true,
@@ -59,12 +61,27 @@ export class UserEditComponent implements OnInit {
   }
 
   onSubmit() {
-    this.service.changeRole(this.model.email, this.model.role).subscribe({
-      error: () => {
-        alert("User role updated successfully!");
+  this.service.changeRole(this.model.email, this.model.role).subscribe({
+
+    error: () => {
+      Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: 'User role updated successfully!'
+      }).then(() => {
         this.router.navigate(['/users']);
-      },
-      next: () => alert("Failed to update role")
-    });
-  }
+      });
+    },
+
+    next: () => {
+      Swal.fire({
+        icon: 'error',
+        title: 'Failed',
+        text: 'Failed to update role'
+      });
+    }
+
+  });
+}
+
 }

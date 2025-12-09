@@ -3,6 +3,7 @@ import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../features/auth/services/auth.service';
 import { HasPermissionDirective } from '../../directives/has-permission.directive';
+import { HostListener } from '@angular/core';
 
 
 @Component({
@@ -35,5 +36,22 @@ export class MainLayoutComponent {
   openProfile() {
   this.router.navigate(['/profile']);
 }
+userMenuOpen = false;
+
+toggleUserMenu(){
+  this.userMenuOpen = !this.userMenuOpen;
+}
+
+closeDropdown(){
+  this.userMenuOpen = false;
+}
+
+@HostListener('document:click', ['$event'])
+onClickOutside(event:any){
+  if (!event.target.closest('.user-dropdown')) {
+    this.userMenuOpen = false;
+  }
+}
+
 
 }

@@ -91,12 +91,25 @@
   border-bottom: 2px solid #e5e7eb;
 }
 
+/* 👇 Center "Actions" column text */
+.employee-table th:last-child {
+  text-align: center !important;
+}
+
 .employee-table td {
   padding: 14px;
   border-bottom: 1px solid #f1f1f1;
   font-size: 14px;
   color: #374151;
   transition: 0.2s;
+}
+
+/* 👇 Center actions cell & give spacing */
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px; /* 3px to 6px spacing */
 }
 
 .employee-table tr:hover td {
@@ -120,6 +133,7 @@
 .delete-btn:hover {
   background: #111827;
 }
+
 /* ================= Pagination ================ */
 .pagination {
   display: flex;
@@ -138,7 +152,6 @@
   border-radius: 8px;
   cursor: pointer;
   transition: 0.25s;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.10);
 }
 
 .pagination button:hover:not(:disabled) {
@@ -149,8 +162,6 @@
 .pagination button:disabled {
   background: #9CA3AF;
   cursor: not-allowed;
-  opacity: 0.6;
-  box-shadow: none;
 }
 
 .pagination span {

@@ -2,8 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+
 import { DepartmentService } from '../../services/department.service';
 import { HasPermissionDirective } from '../../../../shared/directives/has-permission.directive';
+import { PermissionService } from '../../../../core/services/permission.service';
+
 import Swal from 'sweetalert2';
 
 @Component({
@@ -26,14 +29,15 @@ export class DepartmentListComponent implements OnInit {
 
   constructor(
     private service: DepartmentService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private permissionService: PermissionService   //<--- ⭐
+  ) { }
 
   ngOnInit(): void {
+    this.permissionService.load().subscribe();   //<--- LOAD PERMISSIONS
     this.getData();
   }
 
-  // Load Data From Backend with Pagination + Search
   getData() {
     this.service.getPaged(this.page, this.pageSize, this.searchText)
       .subscribe((res: any) => {
@@ -43,7 +47,12 @@ export class DepartmentListComponent implements OnInit {
       });
   }
 
-  // Search
+  // 👇 EXACT EMPLOYEE STYLE
+  hasAnyActionPermission(): boolean {
+    return this.permissionService.has('department.edit') ||
+           this.permissionService.has('department.delete');
+  }
+
   filterDepartments() {
     this.page = 1;
     this.getData();
@@ -62,32 +71,28 @@ export class DepartmentListComponent implements OnInit {
     title: 'Are you sure?',
     text: 'This department will be permanently deleted!',
     icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Yes, delete it!'
+    showCancelButton: true
   }).then((result) => {
     if (result.isConfirmed) {
 
-      this.service.delete(id).subscribe(() => {
-        
-        Swal.fire({
-          icon: 'success',
-          title: 'Deleted!',
-          text: 'Department has been removed.',
-          timer: 1500,
-          showConfirmButton: false
-        });
-
-        this.getData();
+      this.service.delete(id).subscribe({
+        next: () => {
+          Swal.fire('Deleted!', 'Department removed.', 'success');
+          this.getData();
+        },
+        error: (err) => {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: err.error?.message || 'Cannot delete department beacuse its use in employe .'
+          });
+        }
       });
 
     }
   });
 }
 
-
-  // Pagination
   nextPage() {
     if (this.page < this.totalPages) {
       this.page++;
@@ -101,4 +106,8 @@ export class DepartmentListComponent implements OnInit {
       this.getData();
     }
   }
+  get isAdmin(): boolean {
+  return this.permissionService.has('admin');
+}
+
 }

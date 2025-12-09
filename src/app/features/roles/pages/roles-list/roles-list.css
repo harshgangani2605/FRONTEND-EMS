@@ -1,34 +1,48 @@
-/* Main container */
-.role-container {
+/* ===========================================
+   MAIN CONTAINER
+=========================================== */
+.department-container {
   background: #ffffff;
-  padding: 28px;
+  padding: 24px;
   border-radius: 18px;
   box-shadow: 0 6px 20px rgba(0,0,0,0.06);
   margin: 25px auto;
   width: 100%;
   max-width: 1300px;
   border: 1px solid #e5e7eb;
+  box-sizing: border-box;
 }
 
-/* Header */
+/* ===========================================
+   HEADER (TITLE + SEARCH + ADD BUTTON)
+=========================================== */
 .header-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 22px;
   flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 20px;
 }
 
 .header-row h2 {
+  margin: 0;
   font-size: 24px;
   font-weight: 700;
   color: #1f2937;
+  white-space: nowrap;
 }
 
 .header-actions {
   display: flex;
+  align-items: center;
   gap: 12px;
+  flex-wrap: wrap;
 }
+
+/* ===========================================
+   SEARCH INPUT
+=========================================== */
 .search-input {
   padding: 10px 14px;
   width: 220px;
@@ -46,7 +60,23 @@
   box-shadow: 0 0 6px rgba(79,70,229,0.25);
   outline: none;
 }
-/* Add Button */
+/* center actions */
+.actions-header {
+  width: 200px;
+  text-align: center !important;
+}
+
+/* same button style as employees */
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ===========================================
+   ADD BUTTON
+=========================================== */
 .add-btn {
   background: #374151;
   color: white;
@@ -57,6 +87,7 @@
   font-size: 15px;
   font-weight: 500;
   transition: 0.25s;
+  white-space: nowrap;
 }
 
 .add-btn:hover {
@@ -64,41 +95,50 @@
   transform: translateY(-2px);
 }
 
-/* Table Wrapper */
+/* ===========================================
+   TABLE STYLES
+=========================================== */
 .table-wrapper {
   width: 100%;
   overflow-x: auto;
 }
 
-.role-table {
+.department-table {
   width: 100%;
-  min-width: 800px;
+  min-width: 700px;
   border-collapse: collapse;
+  background: #fff;
 }
 
-.role-table th {
+.department-table th {
   background: #F3F4F6;
   padding: 14px;
   font-weight: 600;
   font-size: 14px;
   color: #374151;
+  white-space: nowrap;
 }
 
-.role-table td {
+.department-table td {
   padding: 14px;
   border-bottom: 1px solid #f1f1f1;
   font-size: 14px;
   color: #374151;
 }
 
-.role-table tr:hover td {
+.department-table tr:hover td {
   background: #F9FAFB;
 }
 
-/* Action Buttons */
-.action-buttons {
+/* ===========================================
+   ACTION BUTTONS (Edit - Delete)
+=========================================== */
+.action-buttons,
+.action-cell {
   white-space: nowrap;
 }
+
+/* EXACT EMPLOYEE STYLE BUTTONS */
 
 .edit-btn,
 .delete-btn {
@@ -106,10 +146,11 @@
   padding: 7px 16px;
   border: none;
   border-radius: 6px;
-  color: white;
-  font-size: 12px;
+  color: #fff;
   cursor: pointer;
+  font-size: 12px;
   transition: 0.25s;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.10);
 }
 
 .edit-btn:hover,
@@ -118,28 +159,25 @@
   transform: translateY(-2px);
 }
 
-.delete-btn {
-  background: #374151;
-}
 
-.delete-btn:hover {
-  background: #374151;
-}
-
-/* Pagination */
+/* ===========================================
+   PAGINATION
+=========================================== */
 .pagination {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-top: 22px;
   gap: 12px;
+  flex-wrap: wrap;
 }
 
 .pagination button {
   background: #374151;
   color: white;
-  padding: 8px 18px;
   border: none;
+  padding: 8px 18px;
+  font-size: 14px;
   border-radius: 8px;
   cursor: pointer;
   transition: 0.25s;
@@ -161,20 +199,82 @@
   color: #374151;
 }
 
-/* Responsive */
-@media (max-width: 600px) {
+/* ===========================================
+   RESPONSIVE DESIGN
+=========================================== */
+
+/* Large Tablets / Small Laptops */
+@media (max-width: 1024px) {
+  .search-input {
+    width: 200px;
+  }
+}
+
+/* Tablets */
+@media (max-width: 768px) {
   .header-row {
     flex-direction: column;
     align-items: flex-start;
+    gap: 16px;
   }
 
   .header-actions {
     width: 100%;
     justify-content: space-between;
   }
-  .search-input, .add-btn {
+
+  .search-input {
+    width: 60%;
+  }
+
+  .add-btn {
+    width: auto;
+  }
+}
+
+/* Mobile - Compact Layout */
+@media (max-width: 600px) {
+
+  .header-actions {
+    flex-direction: column;
     width: 100%;
   }
-  
 
+  .search-input,
+  .add-btn {
+    width: 100%;
+  }
+}
+
+/* Very Small Phones (≤400px) */
+@media (max-width: 400px) {
+  .department-table {
+    min-width: 0;
+    font-size: 12px;
+  }
+
+  th, td {
+    padding: 10px;
+  }
+
+  .btn-edit, .btn-delete {
+    padding: 6px 12px;
+    font-size: 11px;
+  }
+}
+
+/* Ultra Small Screens (≤330px) */
+@media (max-width: 330px) {
+  .header-row h2 {
+    font-size: 20px;
+  }
+
+  .btn-edit, .btn-delete {
+    padding: 5px 10px;
+    font-size: 10px;
+  }
+
+  .search-input {
+    font-size: 12px;
+  }
 }

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { EmployeeService } from '../../services/employee.service';
 import { HasPermissionDirective } from '../../../../shared/directives/has-permission.directive';
+import { PermissionService } from '../../../../core/services/permission.service';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
 
@@ -26,16 +27,17 @@ export class EmployeeListComponent implements OnInit {
 
   constructor(
     private service: EmployeeService,
-    private router: Router
+    private router: Router,
+    private permissionService: PermissionService   // ⭐ added
   ) {}
 
   ngOnInit(): void {
+    this.permissionService.load().subscribe();     // ⭐ load permissions
     this.loadData();
   }
 
   loadData() {
     this.loading = true;
-
     this.service.getPaged(this.page, this.pageSize, this.searchText)
       .subscribe({
         next: (res: any) => {
@@ -43,10 +45,13 @@ export class EmployeeListComponent implements OnInit {
           this.totalItems = res.totalItems;
           this.loading = false;
         },
-        error: () => {
-          this.loading = false;
-        }
+        error: () => { this.loading = false; }
       });
+  }
+
+  hasAnyActionPermission(): boolean {
+    return this.permissionService.has('employee.edit') ||
+           this.permissionService.has('employee.delete');
   }
 
   onSearch() {
@@ -76,7 +81,6 @@ export class EmployeeListComponent implements OnInit {
     this.router.navigate(['/employees/create']);
   }
 
-  // NEW SWEETALERT DELETE FUNCTION
   delete(id: number) {
     Swal.fire({
       title: 'Are you sure?',
@@ -96,7 +100,6 @@ export class EmployeeListComponent implements OnInit {
             timer: 1500,
             showConfirmButton: false
           });
-
           this.loadData();
         });
       }
@@ -106,4 +109,9 @@ export class EmployeeListComponent implements OnInit {
   getSkillNames(skills: any[]) {
     return skills?.length ? skills.join(', ') : "No Skills";
   }
+  get isAdmin(): boolean {
+  return this.permissionService.has('admin');
+}
+
+
 }

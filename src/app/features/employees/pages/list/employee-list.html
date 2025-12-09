@@ -4,13 +4,11 @@
     <h2>Employees</h2>
 
     <div class="header-actions">
-      <input 
-        type="text"
-        class="search-input"
-        placeholder="Search employees..."
-        [(ngModel)]="searchText"
-        (input)="onSearch()"
-      />
+      <input type="text"
+             class="search-input"
+             placeholder="Search employees..."
+             [(ngModel)]="searchText"
+             (input)="onSearch()" />
 
       <button class="add-btn"
               *hasPermission="'employee.create'"
@@ -31,8 +29,10 @@
           <th>Department</th>
           <th>Salary</th>
           <th>Skills</th>
-          <th *hasPermission="'employee.edit'"></th>
-          <th *hasPermission="'employee.delete'"></th>
+          <th *ngIf="isAdmin">Created By</th>
+
+          <!-- ONLY IF EDIT OR DELETE -->
+          <th *ngIf="hasAnyActionPermission()">Actions</th>
         </tr>
       </thead>
 
@@ -45,36 +45,33 @@
           <td>{{ emp.departmentName || 'No Department' }}</td>
           <td>{{ emp.salary | currency:'INR' }}</td>
           <td>{{ getSkillNames(emp.skills) }}</td>
+          <td *ngIf="isAdmin">{{ emp.createdBy }}</td>
 
-          <td *hasPermission="'employee.edit'" class="action-buttons">
-            <button class="edit-btn" (click)="edit(emp.id)">Edit</button>
-          </td>
+          <!-- ONLY SHOW CELL IF ANY PERMISSION -->
+          <td *ngIf="hasAnyActionPermission()" class="action-buttons">
 
-          <td *hasPermission="'employee.delete'" class="action-buttons">
-            <button class="delete-btn" (click)="delete(emp.id)">Delete</button>
+            <button class="edit-btn"
+                    *hasPermission="'employee.edit'"
+                    (click)="edit(emp.id)">
+              Edit
+            </button>
+
+            <button class="delete-btn"
+                    *hasPermission="'employee.delete'"
+                    (click)="delete(emp.id)">
+              Delete
+            </button>
+
           </td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <!-- 🔽 PAGINATION (Backend) -->
   <div class="pagination">
-    <button 
-      [disabled]="page === 1"
-      (click)="prevPage()">
-      Prev
-    </button>
-
-    <span>
-      Page {{ page }} of {{ Math.ceil(totalItems / pageSize) }}
-    </span>
-
-    <button 
-      [disabled]="page * pageSize >= totalItems"
-      (click)="nextPage()">
-      Next
-    </button>
+    <button [disabled]="page === 1" (click)="prevPage()">Prev</button>
+    <span>Page {{ page }} of {{ Math.ceil(totalItems / pageSize) }}</span>
+    <button [disabled]="page * pageSize >= totalItems" (click)="nextPage()">Next</button>
   </div>
 
 </div>
