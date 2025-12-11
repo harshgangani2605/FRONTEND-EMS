@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router, RouterLink } from '@angular/router';
-
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -24,15 +24,30 @@ export class LoginComponent {
       return;
     }
     
-    this.auth.login({ email: this.email, password: this.password }).subscribe({
+    this.auth.login({ email: this.email.trim(), password: this.password }).subscribe({
       next: (res) => {
-    this.auth.saveToken(res.token);
-    this.auth.saveUserFromToken(res.token);  // ⭐ VERY IMPORTANT
 
-    this.auth.loadPermissions(() => {
-      this.router.navigate(['/dashboard']);
-    });
-},
+        // SAVE TOKEN + USER
+        this.auth.saveToken(res.token);
+        this.auth.saveUserFromToken(res.token);
+
+        // LOAD PERMISSIONS → THEN SUCCESS POPUP
+        this.auth.loadPermissions(() => {
+
+          Swal.fire({
+            icon: "success",
+            title: "Login Successful!",
+            text: "Welcome back!",
+            showConfirmButton: false,
+            timer: 1500
+          });
+
+          setTimeout(() => {
+            this.router.navigate(['/dashboard']);
+          }, 1500);
+
+        });
+      },
 
       error: (err) => {
         this.errorMessage = err.error?.message || 'Invalid Credentials';

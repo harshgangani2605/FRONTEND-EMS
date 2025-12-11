@@ -1,3 +1,4 @@
+<div class="center-wrapper">
 <div class="register-container">
   <h2>Register</h2>
 
@@ -41,13 +42,14 @@
         [(ngModel)]="email"
         required
         email
+        (input)="clearEmailError()"
         #emailCtrl="ngModel"
         (blur)="email=email.trim(); emailCtrl.control.markAsTouched()"
       />
 
       <p class="error" *ngIf="emailCtrl.touched && emailCtrl.errors?.['required']">
         Email is required
-      </p>
+      </p><p class="error">{{ errorMessage }}</p>
 
       <p class="error" *ngIf="emailCtrl.touched && emailCtrl.errors?.['email']">
         Invalid email format
@@ -98,12 +100,19 @@
     </div>
 
     <!-- GLOBAL ERRORS -->
-    <p class="error">{{ errorMessage }}</p>
-    <p class="success">{{ successMessage }}</p>
+    
+   
 
     <button type="submit" class="save-btn" [disabled]="regForm.invalid">
       Register
     </button>
 
+       <!-- LOGIN LINK -->
+    <p class="login-link">
+      Already have an account?
+      <a routerLink="/login">Login</a>
+    </p>
+
   </form>
+</div>
 </div>

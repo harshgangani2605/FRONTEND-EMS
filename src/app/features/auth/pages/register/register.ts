@@ -4,7 +4,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { Router, RouterLink } from '@angular/router';
 import { HasPermissionDirective } from '../../../../shared/directives/has-permission.directive';
-
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-register',
   standalone: true,
@@ -21,7 +21,9 @@ export class RegisterComponent {
   successMessage = '';
 
   constructor(private auth: AuthService, private router: Router) { }
-
+  clearEmailError() {
+    this.errorMessage = "";
+  }
   onRegister(form: NgForm) {
 
   this.fullName = this.fullName.trim();
@@ -55,14 +57,38 @@ export class RegisterComponent {
     email: this.email,
     password: this.password
   }).subscribe({
-    next: (res) => {
-      this.successMessage = res.message || "Registration successful!";
-      setTimeout(() => this.router.navigate(['/login']), 1500);
-    },
-    error: (err) => {
-      this.errorMessage = err.error?.message || "Registration failed";
-    }
-  });
-}
+    next: res => {
+
+        Swal.fire({
+          icon: "success",
+          title: "Registration Successful!",
+          text: "Your account has been created.",
+          timer: 1500,
+          showConfirmButton: false
+        });
+
+        setTimeout(() => {
+          this.router.navigate(['/login']);
+        }, 1500);
+      },
+    
+      error: err => {
+
+        const msg = (
+          err.error?.message ||
+          err.error?.title ||
+          err.error?.detail ||
+          err.error ||
+          ""
+        ).toString().toLowerCase();
+
+        if (msg.includes("exists") || msg.includes("already")) {
+          Swal.fire("Email already exists!", "Please use another email.", "error");
+        } else {
+          Swal.fire("Registration failed!", "Please try again.", "error");
+        }
+      }
+    });
+  }
 
 }

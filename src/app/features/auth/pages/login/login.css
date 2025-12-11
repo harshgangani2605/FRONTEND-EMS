@@ -1,16 +1,30 @@
 /* ===========================================
    LOGIN CONTAINER CARD
 =========================================== */
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+.center-wrapper {
+  height: 100vh;                 /* Full screen height */
+  display: flex;
+  justify-content: center;       /* Center horizontally */
+  align-items: center;           /* Center vertically */
+  background: #f8fafc;           /* Optional light bg */
+}
+
 .login-container {
   background: #ffffff;
   padding: 32px;
   border-radius: 18px;
   box-shadow: 0 6px 20px rgba(0,0,0,0.06);
   max-width: 480px;
-  margin: 60px auto;
+  width: 100%;
   border: 1px solid #e5e7eb;
   box-sizing: border-box;
 }
+
 
 /* Title */
 .login-container h2 {
