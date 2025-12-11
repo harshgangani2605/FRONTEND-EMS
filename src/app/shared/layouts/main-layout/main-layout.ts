@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router, RouterModule, RouterOutlet } from '@angular/router';
+import { Router, RouterLinkActive, RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../features/auth/services/auth.service';
 import { HasPermissionDirective } from '../../directives/has-permission.directive';
@@ -9,7 +9,7 @@ import { HostListener } from '@angular/core';
 @Component({
   selector: 'app-main-layout',
   standalone: true,
-  imports: [CommonModule, RouterOutlet,RouterModule,HasPermissionDirective],
+  imports: [CommonModule, RouterOutlet,RouterModule,HasPermissionDirective,RouterLinkActive],
   templateUrl: './main-layout.html',
   styleUrls: ['./main-layout.css']
 })

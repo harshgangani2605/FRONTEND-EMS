@@ -1,100 +1,110 @@
-/* ============================
-   MAIN CONTAINER
-============================ */
-.create-role-container {
-  background: #ffffff;
-  padding: 30px;
-  border-radius: 18px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.06);
-  max-width: 500px;
-  margin: 40px auto;
-  border: 1px solid #e5e7eb;
+/* Perfect CSS for the Form Component */
+/* Universal box-sizing for consistent spacing */
+*, *::before, *::after {
   box-sizing: border-box;
 }
 
-.create-role-container h2 {
-  text-align: center;
-  font-size: 26px;
-  font-weight: 700;
-  color: #1f2937;
-  margin-bottom: 22px;
+/* Form Container */
+.form-container {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  margin: 20px auto; /* Center the form on larger screens */
+  display: flex;
+  flex-direction: column;
 }
 
-/* ============================
-   FORM
-============================ */
+/* Form Title */
+.form-container h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Form Styling */
 form {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 20px;
+}
+.required{
+  color:red
+}
+/* Label Styling */
+label {
+  font-weight: 500;
+  font-size: 20px;
+  color: #555;
+  margin-bottom: -10px; /* Adjust spacing between label and input */
 }
 
-form label {
-  font-size: 14px;
-  font-weight: 600;
-  color: #374151;
-}
-
-form input {
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid #d1d5db;
-  background: #f9fafb;
-  font-size: 15px;
-  transition: 0.25s ease;
-}
-
-form input:focus {
-  outline: none;
-  border-color: #4F46E5;
-  background: white;
-  box-shadow: 0 0 6px rgba(79,70,229,0.25);
-}
-
-/* ============================
-   SAVE BUTTON
-============================ */
-.btn-save {
+/* Input Field Styling */
+input[type="text"] {
   width: 100%;
-  padding: 14px;
-  background: #374151;
-  border: none;
-  color: white;
-  border-radius: 10px;
+  padding: 12px 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
   font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.25s ease;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.10);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.btn-save:hover {
-  background: #111827;
+/* Focus and hover states for input */
+input[type="text"]:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 6px rgba(37, 99, 235, 0.3);
+}
+
+/* Disabled input state */
+input[type="text"]:disabled {
+  background-color: #f9f9f9;
+  cursor: not-allowed;
+}
+
+/* Save Button */
+.save-btn {
+  background: #374151;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 10px; /* Space between input and button */
+}
+
+/* Save Button hover and active states */
+.save-btn:hover {
+  background: #374151;
   transform: translateY(-2px);
 }
-.error{
-  color: red;
+
+.save-btn:active {
+  transform: translateY(0);
 }
-/* ============================
-   RESPONSIVE
-============================ */
-@media (max-width: 480px) {
-  .create-role-container {
-    padding: 22px;
-    margin: 20px;
+.error{
+  color:red
+}
+
+/* Media query for smaller devices */
+@media (max-width: 600px) {
+  .form-container {
+    padding: 20px;
+    margin: 15px; /* Add some margin on all sides */
   }
 
-  .create-role-container h2 {
-    font-size: 22px;
+  .form-container h2 {
+    font-size: 20px;
   }
 
-  form input {
-    padding: 10px;
-    font-size: 14px;
-  }
-
-  .btn-save {
-    padding: 12px;
-    font-size: 15px;
+  .save-btn {
+    width: 100%; /* Make button full width */
   }
 }

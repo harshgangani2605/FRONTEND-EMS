@@ -40,6 +40,17 @@ export class UserCreateComponent implements OnInit {
 
   save(form: any) {
     if (form.invalid) return;
+     // trim fix
+  this.model.FullName = this.model.FullName.trim();
+
+  // show UI validation messages
+  form.control.markAllAsTouched();
+
+  if (form.invalid) return;
+
+  // manual full length check
+  if (this.model.FullName.length < 3 || this.model.FullName.length > 30)
+    return;
 
     this.api.post('Admin/create-user', this.model).subscribe({
 

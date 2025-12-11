@@ -10,48 +10,43 @@
   <!-- SIDEBAR -->
   <aside class="sidebar" [class.open]="sidebarOpen">
 
-   <div class="logo-area">
+    <div class="logo-area">
 
-  <button class="mobile-toggle" (click)="toggleSidebar()">
-    <i class="bi bi-list"></i>
-  </button>
+      <button class="mobile-toggle" (click)="toggleSidebar()">
+        <i class="bi bi-list"></i>
+      </button>
 
-  <h2>EMS</h2>
-  <p class="ems">Management System</p>
+      <h2>EMS</h2>
+      <p class="ems">Management System</p>
 
-</div>
+    </div>
 
-    
+
     <ul class="menu">
-  <li routerLink="/dashboard">
-      <i class="bi bi-speedometer2"></i> Dashboard
-  </li>
+      <li routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+        <i class="bi bi-speedometer2"></i> Dashboard
+      </li>
 
-  <li routerLink="/employees"
-      *hasPermission="'employee.view'">
-      <i class="bi bi-people"></i> Employees
-  </li>
+      <li routerLink="/employees" routerLinkActive="active" *hasPermission="'employee.view'">
+        <i class="bi bi-people"></i> Employees
+      </li>
 
-  <li routerLink="/department"
-      *hasPermission="'department.view'">
-      <i class="bi bi-building"></i> Departments
-  </li>
+      <li routerLink="/department" routerLinkActive="active" *hasPermission="'department.view'">
+        <i class="bi bi-building"></i> Departments
+      </li>
 
-  <li routerLink="/skills"
-      *hasPermission="'skill.view'">
-      <i class="bi bi-layers"></i> Skills
-  </li>
+      <li routerLink="/skills" routerLinkActive="active" *hasPermission="'skill.view'">
+        <i class="bi bi-layers"></i> Skills
+      </li>
 
-  <li routerLink="/users"
-      *hasPermission="'user.view'">
-      <i class="bi bi-person-circle"></i> Users
-  </li>
+      <li routerLink="/users" routerLinkActive="active" *hasPermission="'user.view'">
+        <i class="bi bi-person-circle"></i> Users
+      </li>
 
-  <li routerLink="/roles"
-      *hasPermission="'role.manage'">
-      <i class="bi bi-shield-lock"></i> Roles
-  </li>
-</ul>
+      <li routerLink="/roles" routerLinkActive="active" *hasPermission="'role.manage'">
+        <i class="bi bi-shield-lock"></i> Roles
+      </li>
+    </ul>
 
 
   </aside>

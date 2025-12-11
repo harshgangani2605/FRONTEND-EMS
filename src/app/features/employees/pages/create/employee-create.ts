@@ -20,6 +20,8 @@ export class EmployeeCreateComponent {
   error: string = "";
   nameMinLength = 3;
   today = new Date().toISOString().split('T')[0];
+  skillsTouched: boolean = false;
+  
 
   employee = {
     fullName: '',
@@ -40,6 +42,9 @@ export class EmployeeCreateComponent {
     this.loadDepartments();
     this.loadSkills();
   }
+  validateSkills() {
+  this.skillsTouched = true;
+}
 
   loadDepartments() {
     this.api.get('departments').subscribe((res: any) => {
@@ -54,130 +59,65 @@ export class EmployeeCreateComponent {
   }
 
   toggleSkill(skillId: number, event: any) {
-    if (event.target.checked) {
-      this.employee.skillIds.push(skillId);
-    } else {
-      this.employee.skillIds = this.employee.skillIds.filter(id => id !== skillId);
-    }
+
+  this.skillsTouched = true;  // <<< ADD THIS LINE
+
+  if (event.target.checked) {
+    this.employee.skillIds.push(skillId);
+  } else {
+    this.employee.skillIds = this.employee.skillIds.filter(id => id !== skillId);
   }
+}
+
 
   save(form: NgForm) {
 
-  this.error = "";
+  // FIX SPACE INPUTS
+  this.employee.fullName = this.employee.fullName.trim();
+  this.employee.email = this.employee.email.trim();
 
-  // Angular required validation
-  if (form.invalid) {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Validation Error',
-      text: 'Please fill all required fields'
-    });
+  // show all UI errors
+  form.control.markAllAsTouched();
+
+  // angular required + maxlength + pattern
+  if (form.invalid) return;
+
+  // full name length check
+  if (this.employee.fullName.length < 3 || this.employee.fullName.length > 30)
     return;
-  }
 
-  // Full name trim validation
-  if (this.employee.fullName.trim().length < this.nameMinLength) {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Invalid Name',
-      text: `Full Name must be at least ${this.nameMinLength} characters long`
-    });
-    return;
-  }
-
-  // Email validation
+  // EMAIL REGEX CHECK
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(this.employee.email)) {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Invalid Email',
-      text: 'Please enter a valid email address'
-    });
-    return;
-  }
+  if (!emailRegex.test(this.employee.email)) return;
 
-  // Salary validation
-  if (this.employee.salary < 0) {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Invalid Salary',
-      text: 'Salary cannot be negative'
-    });
-    return;
-  }
 
-  // Date validation
-  if (this.employee.joinedOn > this.today) {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Invalid Date',
-      text: 'Joined date cannot be in the future'
-    });
-    return;
-  }
+  // Salary
+  if (this.employee.salary < 1) return;
 
-  // Skills required
+  // Joined date
+  if (this.employee.joinedOn > this.today) return;
+
+  // Skills
   if (this.employee.skillIds.length === 0) {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Skills Required',
-      text: 'Please select at least one skill'
-    });
+    this.skillsTouched = true;
     return;
   }
 
-  // API CALL
+  // SUCCESS
   this.empService.createEmployee(this.employee).subscribe({
 
     next: () => {
       Swal.fire({
         icon: 'success',
         title: 'Employee Created!',
-        text: 'The employee has been added successfully.',
         showConfirmButton: false,
         timer: 1500
       });
 
-      setTimeout(() => {
-        this.router.navigate(['/employees']);
-      }, 1500);
-    },
-
-    error: (err) => {
-      const backendMsg = (
-        err.error?.message ||
-        err.error?.detail ||
-        err.error?.title ||
-        err.error ||
-        err.statusText ||
-        ""
-      ).toString().toLowerCase();
-
-      if (backendMsg.includes("email")) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Duplicate Email',
-          text: 'Email already exists. Use a different one.'
-        });
-        return;
-      }
-
-      if (backendMsg.includes("name")) {
-        Swal.fire({
-          icon: 'error',
-          title: 'Duplicate Name',
-          text: 'Employee name already exists.'
-        });
-        return;
-      }
-
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: 'Failed to create employee.'
-      });
+      this.router.navigate(['/employees']);
     }
   });
 }
+
 
 }

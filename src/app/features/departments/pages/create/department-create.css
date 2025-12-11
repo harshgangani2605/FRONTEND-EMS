@@ -37,7 +37,7 @@ form {
 /* Label Styling */
 label {
   font-weight: 500;
-  font-size: 22px;
+  font-size: 20px;
   color: #555;
   margin-bottom: -10px; /* Adjust spacing between label and input */
 }
@@ -55,8 +55,8 @@ input[type="text"] {
 /* Focus and hover states for input */
 input[type="text"]:focus {
   outline: none;
-  border-color: #374151;
-  box-shadow: 0 0 0 3px rgba(45, 108, 223, 0.2);
+  border-color: #2563eb;
+  box-shadow: 0 0 6px rgba(37, 99, 235, 0.3);
 }
 
 /* Disabled input state */

@@ -4,20 +4,32 @@
   <form #form="ngForm" (ngSubmit)="save(form)">
 
     <label>Department Name <span class="required">*</span></label>
+
     <input 
-      type="text" 
-      name="name" 
-      [(ngModel)]="model.name" 
+      type="text"
+      name="name"
+      [(ngModel)]="model.name"
       required
+      minlength="2"
       #nameRef="ngModel"
+      (blur)="nameRef.control.setValue(model.name?.trim()); nameRef.control.markAsTouched()"
     />
 
-    <!-- INLINE ERRORS BELOW INPUT -->
-    <span class="error" *ngIf="errors.name">{{ errors.name }}</span>
+    <!-- ERROR MESSAGES -->
+    <span class="error" *ngIf="nameRef.touched && nameRef.errors">
 
+      <ng-container *ngIf="nameRef.errors['required']">
+        Department name is required
+      </ng-container>
 
+      <ng-container *ngIf="nameRef.errors['minlength']">
+        Minimum 2 characters required
+      </ng-container>
+
+      <!-- Show backend error -->
+   
+    </span>
 
     <button class="save-btn" type="submit">Save</button>
-
   </form>
 </div>

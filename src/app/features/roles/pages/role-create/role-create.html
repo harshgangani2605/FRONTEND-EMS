@@ -1,23 +1,35 @@
-<div class="create-role-container">
+<div class="form-container">
+
   <h2>Add Role</h2>
 
   <form #form="ngForm" (ngSubmit)="save(form)">
 
     <label>Role Name <span class="required">*</span></label>
+
     <input 
       type="text"
       name="name"
       [(ngModel)]="model.name"
       required
+      minlength="2"
       #nameRef="ngModel"
+      (blur)="nameRef.control.setValue(model.name?.trim()); nameRef.control.markAsTouched()"
     />
 
-    <!-- INLINE ERROR -->
-    <span class="error" *ngIf="errors.name">{{ errors.name }}</span>
+    <!-- ERROR MESSAGES -->
+    <span class="error" *ngIf="nameRef.touched && nameRef.errors">
 
-    <span class="error" *ngIf="errors.form">{{ errors.form }}</span>
+      <ng-container *ngIf="nameRef.errors['required']">
+        Role name is required
+      </ng-container>
 
-    <button type="submit" class="btn-save">Save</button>
-    
+      <ng-container *ngIf="nameRef.errors['minlength']">
+        Minimum 2 characters required
+      </ng-container>
+
+    </span>
+
+    <button type="submit" class="save-btn">Save</button>
   </form>
+
 </div>

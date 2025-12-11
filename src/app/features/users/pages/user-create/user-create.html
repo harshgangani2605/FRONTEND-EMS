@@ -5,24 +5,32 @@
 
     <!-- FULL NAME -->
     <div class="form-group">
-      <label>Full Name</label>
-      <input
-        type="text"
-        name="FullName"
-        [(ngModel)]="model.FullName"
-        #fullCtrl="ngModel"
-        required
-        minlength="3"
-      />
+  <label>Full Name <span class="required">*</span></label>
 
-      <p class="error" *ngIf="fullCtrl.touched && fullCtrl.errors?.['required']">
-        Full Name is required
-      </p>
+  <input
+    type="text"
+    name="FullName"
+    [(ngModel)]="model.FullName"
+    required
+    minlength="3"
+    maxlength="30"
+    #fullCtrl="ngModel"
+    (blur)="model.FullName = model.FullName.trim(); fullCtrl.control.markAsTouched()"
+  />
 
-      <p class="error" *ngIf="fullCtrl.touched && fullCtrl.errors?.['minlength']">
-        Full Name must be at least 3 characters
-      </p>
-    </div>
+  <p class="error" *ngIf="fullCtrl.touched && fullCtrl.errors?.['required']">
+    Full Name is required
+  </p>
+
+  <p class="error" *ngIf="fullCtrl.touched && fullCtrl.errors?.['minlength']">
+    Minimum 3 characters required
+  </p>
+
+  <p class="error" *ngIf="fullCtrl.touched && fullCtrl.errors?.['maxlength']">
+    Maximum 30 characters allowed
+  </p>
+</div>
+
 
     <!-- EMAIL -->
     <div class="form-group">

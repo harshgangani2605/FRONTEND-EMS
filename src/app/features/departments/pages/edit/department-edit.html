@@ -3,12 +3,28 @@
 
   <form #form="ngForm" (ngSubmit)="update(form)">
 
-    <label>Department Name<span class=required>*</span></label>
-    <input type="text" name="name" [(ngModel)]="model.name" required />
+    <label>Department Name <span class="required">*</span></label>
 
-    <span class="error" *ngIf="errors.name">{{ errors.name }}</span>
+    <input 
+      type="text"
+      name="name"
+      [(ngModel)]="model.name"
+      required
+      minlength="2"
+      #nameRef="ngModel"
+      (blur)="nameRef.control.setValue(model.name?.trim()); nameRef.control.markAsTouched()"
+    />
 
-    <button class="save-btn" type="submit">Update</button>
+    <span class="error" *ngIf="nameRef.touched && nameRef.errors">
+      <ng-container *ngIf="nameRef.errors['required']">
+        Department name is required
+      </ng-container>
 
+      <ng-container *ngIf="nameRef.errors['minlength']">
+        Minimum 2 characters required
+      </ng-container>
+    </span>
+
+    <button type="submit" class="save-btn">Update</button>
   </form>
 </div>

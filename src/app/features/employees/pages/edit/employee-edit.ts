@@ -18,14 +18,14 @@ export class EmployeeEditComponent implements OnInit {
   id!: number;
   today = new Date().toISOString().split("T")[0];
 
-  errors: any = {};
+  skillsTouched: boolean = false;
 
   model = {
-    fullName: "",
-    email: "",
+    fullName: '',
+    email: '',
     salary: 0,
-    joinedOn: "",
-    departmentId: "",
+    joinedOn: '',
+    departmentId: '',
     skillIds: [] as number[]
   };
 
@@ -72,87 +72,63 @@ export class EmployeeEditComponent implements OnInit {
   }
 
   toggleSkill(skillId: number, event: any) {
+    this.skillsTouched = true;
+
     if (event.target.checked) {
       if (!this.model.skillIds.includes(skillId)) {
         this.model.skillIds = [...this.model.skillIds, skillId];
       }
     } else {
-      this.model.skillIds = this.model.skillIds.filter((x: number) => x !== skillId);
+      this.model.skillIds = this.model.skillIds.filter(x => x !== skillId);
     }
   }
 
   update(form: NgForm) {
-    this.errors = {};
 
-    // BASIC Angular validation
-    if (form.invalid) {
-      Swal.fire('Validation Error', 'Please fill all required fields', 'warning');
+    // trim inputs
+    this.model.fullName = this.model.fullName.trim();
+    this.model.email = this.model.email.trim();
+
+    // show UI errors
+    form.control.markAllAsTouched();
+
+    // angular
+    if (form.invalid) return;
+
+    // full name length
+    if (this.model.fullName.length < 3 || this.model.fullName.length > 30)
       return;
-    }
 
-    // Full Name Validation
-    if (this.model.fullName.trim().length < 3) {
-      Swal.fire('Invalid Name', 'Full name must be at least 3 characters long', 'warning');
-      return;
-    }
-
-    // Email Format Validation
+    // email regex
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(this.model.email)) {
-      Swal.fire('Invalid Email', 'Please enter a valid email address', 'warning');
+    if (!emailRegex.test(this.model.email)) return;
+
+    // salary
+    if (this.model.salary < 1) return;
+
+    // joined date
+    if (this.model.joinedOn > this.today) return;
+
+    // skills
+    if (this.model.skillIds.length === 0) {
+      this.skillsTouched = true;
       return;
     }
 
-    // Salary Validation
-    if (this.model.salary < 0) {
-      Swal.fire('Invalid Salary', 'Salary cannot be negative', 'warning');
-      return;
-    }
-
-    // Date Validation
-    if (this.model.joinedOn > this.today) {
-      Swal.fire('Invalid Date', 'Joining date cannot be in the future', 'warning');
-      return;
-    }
-
-    // Skills Validation
-    if (!this.model.skillIds || this.model.skillIds.length === 0) {
-      Swal.fire('Skills Required', 'Please select at least one skill', 'warning');
-      return;
-    }
-
-    // API CALL
+    // success
     this.service.update(this.id, this.model).subscribe({
 
       next: () => {
         Swal.fire({
           icon: 'success',
           title: 'Employee Updated!',
-          text: 'The employee details were successfully updated.',
-          timer: 1500,
-          showConfirmButton: false
+          showConfirmButton: false,
+          timer: 1500
         });
 
-        setTimeout(() => {
-          this.router.navigate(['/employees']);
-        }, 1500);
-      },
-
-      error: (err) => {
-        const msg = (err.error?.message || err.error?.detail || "").toLowerCase();
-
-        if (msg.includes("email")) {
-          Swal.fire('Duplicate Email', 'This email is already used by another employee.', 'error');
-          return;
-        }
-
-        if (msg.includes("name")) {
-          Swal.fire('Duplicate Name', 'Employee name already exists.', 'error');
-          return;
-        }
-
-        Swal.fire('Error', 'Failed to update employee.', 'error');
+        this.router.navigate(['/employees']);
       }
     });
   }
+
 }

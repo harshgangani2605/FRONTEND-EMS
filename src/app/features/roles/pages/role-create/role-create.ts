@@ -21,80 +21,47 @@ export class RoleCreate {
 
   save(form: any) {
 
-    this.errors = {};
+  form.control.markAllAsTouched();  
 
-    // blank
-    if (form.invalid) {
-      this.errors.name = "Role name is required";
-      return;
-    }
+  // angular built-in required
+  if (form.invalid) return;
 
-    // only spaces
-    if (!this.model.name.trim()) {
-      this.errors.name = "Role name is required";
-      return;
-    }
+  // trim
+  const name = this.model.name.trim();
+  if (name.length < 2) return;
 
-    // min length
-    if (this.model.name.trim().length < 2) {
-      this.errors.name = "Role name must be at least 2 characters";
-      return;
-    }
+  const regex = /^[A-Za-z ]+$/;
+  if (!regex.test(name)) return;
 
-    // only alphabets
-    const regex = /^[A-Za-z ]+$/;
-    if (!regex.test(this.model.name.trim())) {
-      this.errors.name = "Only alphabets are allowed";
-      return;
-    }
+  // body
+  const body = { name };
 
-    const body = { name: this.model.name.trim() };
+  this.http.post('http://localhost:5093/api/Roles/create', body)
+    .subscribe({
 
-    this.http.post('http://localhost:5093/api/Roles/create', body)
-      .subscribe({
+      next: () => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Created!',
+          showConfirmButton: false,
+          timer: 1500
+        });
 
-        next: () => {
-          Swal.fire({
-            icon: 'success',
-            title: 'Created!',
-            text: 'Role created successfully!',
-            confirmButtonColor: '#374151'
-          }).then(() => {
-            this.router.navigate(['/roles']);
-          });
-        },
+        this.router.navigate(['/roles']);
+      },
 
-        error: (err) => {
+      error: (err) => {
 
-          const msg = (
-            err.error?.message ||
-            err.error?.detail ||
-            err.error?.title ||
-            ""
-          ).toString().toLowerCase();
+        const msg = (err.error?.message || err.error?.detail || "").toLowerCase();
 
-          // DUPLICATE
-          if (msg.includes("exists")) {
-            this.errors.name = "Role already exists!";
-
-            Swal.fire({
-              icon: 'error',
-              title: 'Duplicate Role',
-              text: 'This role already exists!',
-              confirmButtonColor: '#d33'
-            });
-          } 
-          else {
-            this.errors.form = "Failed to create role";
-
-            Swal.fire({
-              icon: 'error',
-              title: 'Error',
-              text: 'Failed to create role',
-              confirmButtonColor: '#d33'
-            });
-          }
+        if (msg.includes("exists")) {
+          Swal.fire('Duplicate Role', 'This role already exists!', 'error');
+          return;
         }
-      });
-  }
+
+        Swal.fire('Error', 'Failed to create role', 'error');
+      }
+    });
+}
+
 }
