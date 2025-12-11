@@ -106,16 +106,47 @@ export class EmployeeCreateComponent {
   // SUCCESS
   this.empService.createEmployee(this.employee).subscribe({
 
-    next: () => {
+   next: () => {
       Swal.fire({
-        icon: 'success',
-        title: 'Employee Created!',
+        icon: "success",
+        title: "Employee Created!",
         showConfirmButton: false,
         timer: 1500
       });
 
       this.router.navigate(['/employees']);
-    }
+    },
+
+    // ⛔ ONLY EMAIL EXISTS CHECK HERE
+    error: (err) => {
+
+  const msg = (
+    err.error?.message ||
+    err.error?.title ||
+    err.error?.detail ||
+    err.error ||
+    ""
+  )
+  .toString()
+  .toLowerCase();
+
+  if (msg.includes("email") && msg.includes("exists")) {
+    Swal.fire({
+      icon: "error",
+      title: "Email Already Exists",
+      text: "This email is already registered!",
+    });
+    return;
+  }
+
+  Swal.fire({
+    icon: "error",
+    title: "Error",
+    text: "Failed to create employee."
+  });
+}
+
+    
   });
 }
 
