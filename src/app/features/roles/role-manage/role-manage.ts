@@ -20,6 +20,7 @@ export class RoleManageComponent implements OnInit {
   constructor(private route: ActivatedRoute,private http: HttpClient,private router: Router) {}
 
   ngOnInit() {
+    debugger;
     this.roleId = Number(this.route.snapshot.paramMap.get('id'));
 
     // Load all permissions
@@ -30,13 +31,6 @@ export class RoleManageComponent implements OnInit {
     this.http.get<any[]>(`http://localhost:5093/api/roles/${this.roleId}/permissions`)
       .subscribe(res => {
         this.selectedPermissions = res.map(x => x.id);
-      });
-
-    // Load roles to get name
-    this.http.get<any[]>('http://localhost:5093/api/roles')
-      .subscribe(res => {
-        const found = res.find(r => r.id === this.roleId);
-        this.roleName = found?.name ?? '';
       });
   }
 
@@ -49,6 +43,7 @@ export class RoleManageComponent implements OnInit {
   }
 
   save() {
+    debugger;
 
   const body = {
     roleId: this.roleId,

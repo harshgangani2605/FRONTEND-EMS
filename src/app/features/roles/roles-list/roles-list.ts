@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { HasPermissionDirective } from '../../../../shared/directives/has-permission.directive';
+import { HasPermissionDirective } from '../../../shared/directives/has-permission.directive';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
-import { PermissionService } from '../../../../core/services/permission.service';
+import { PermissionService } from '../../../core/services/permission.service';
 
 @Component({
   selector: 'app-roles-list',

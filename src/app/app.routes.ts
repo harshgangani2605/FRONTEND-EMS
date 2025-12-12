@@ -25,9 +25,9 @@ import { UserCreateComponent } from './features/users/pages/user-create/user-cre
 import { UserListComponent } from './features/users/pages/user-list/user-list';
 import { UserEditComponent } from './features/users/pages/user-edit/user-edit';
 
-import { RoleManageComponent } from './features/roles/pages/role-manage/role-manage';
-import { RolesListComponent } from './features/roles/pages/roles-list/roles-list';
-import { RoleCreate } from './features/roles/pages/role-create/role-create';
+import { RoleManageComponent } from './features/roles/role-manage/role-manage';
+import { RolesListComponent } from './features/roles/roles-list/roles-list';
+import { RoleCreate } from './features/roles/role-create/role-create';
 import { ProfileComponent } from './features/profile/profile';
 import { HasPermissionDirective } from './shared/directives/has-permission.directive';
 import { PermissionGuard } from './core/guards/permission.guard';

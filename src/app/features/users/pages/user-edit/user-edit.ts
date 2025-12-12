@@ -63,7 +63,7 @@ export class UserEditComponent implements OnInit {
   onSubmit() {
   this.service.changeRole(this.model.email, this.model.role).subscribe({
 
-    error: () => {
+    next: () => {
       Swal.fire({
         icon: 'success',
         title: 'Success',
@@ -73,7 +73,7 @@ export class UserEditComponent implements OnInit {
       });
     },
 
-    next: () => {
+    error: () => {
       Swal.fire({
         icon: 'error',
         title: 'Failed',

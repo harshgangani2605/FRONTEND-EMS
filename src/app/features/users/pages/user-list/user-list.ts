@@ -79,23 +79,57 @@ export class UserListComponent implements OnInit {
     confirmButtonText: "Yes, delete",
     cancelButtonText: "Cancel"
   }).then((result) => {
-    if (result.isConfirmed) {
+    if (!result.isConfirmed) return;
 
-      this.service.deleteUser(email).subscribe(() => {
+    this.service.deleteUser(email).subscribe({
 
+      // SUCCESS
+      next: () => {
         Swal.fire({
           icon: "success",
           title: "Deleted!",
           text: "User has been removed.",
           confirmButtonColor: "#374151"
         });
-
         this.loadUsers();
-      });
+      },
 
-    }
+      // ERROR HANDLING (ADMIN USER)
+      error: (err) => {
+        let message =
+          err.error?.message ||
+          err.error?.detail ||
+          err.error ||
+          "Failed to delete user";
+
+        if (typeof message !== "string") {
+          message = JSON.stringify(message);
+        }
+
+        // ⭐ Special message from API (default admin delete)
+        if (message.toLowerCase().includes("default admin")) {
+          Swal.fire({
+            icon: "error",
+            title: "Not Allowed!",
+            text: "Cannot delete default admin user.",
+            confirmButtonColor: "#d33"
+          });
+          return;
+        }
+
+        Swal.fire({
+          icon: "error",
+          title: "Cannot Delete User",
+          text: message,
+          confirmButtonColor: "#d33"
+        });
+      }
+
+    });
+
   });
 }
+
 
   // PAGINATION BUTTONS
   prevPage() {
