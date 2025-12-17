@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { TaskService } from '../task.service';
 import { ProjectService } from '../../project/project.service';
 import { EmployeeService } from '../../employees/services/employee.service';
-
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-task-create',
@@ -55,7 +55,6 @@ export class TaskCreateComponent implements OnInit {
   }
 
  save(form: NgForm) {
-  debugger;
 
   if (form.invalid) {
     Object.values(form.controls).forEach(control =>
@@ -67,15 +66,29 @@ export class TaskCreateComponent implements OnInit {
   this.saving = true;
 
   this.taskService.create(this.model).subscribe({
-    
+
     next: () => {
 
-      alert('Task created successfully');
+      Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: 'Task created successfully.',
+        timer: 1500,
+        showConfirmButton: false
+      });
+
       this.router.navigate(['/task/list']);
     },
+
     error: (err: any) => {
+
       this.saving = false;
-      alert(err.error?.message ?? 'Failed to create task');
+
+      Swal.fire({
+        icon: 'error',
+        title: 'Failed!',
+        text: err.error?.message ?? 'Failed to create task'
+      });
     }
   });
 }

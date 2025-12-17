@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService } from '../project.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-project-update',
@@ -76,15 +77,32 @@ export class ProjectUpdateComponent implements OnInit {
   this.saving = true;
 
   this.projectService.update(this.id, this.model).subscribe({
+
     next: () => {
-      alert('Project updated successfully');
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Updated!',
+        text: 'Project updated successfully.',
+        timer: 1500,
+        showConfirmButton: false
+      });
+
       this.router.navigate(['/project/list']);
     },
+
     error: () => {
+
       this.saving = false;
-      alert('Failed to update project');
+
+      Swal.fire({
+        icon: 'error',
+        title: 'Failed!',
+        text: 'Failed to update project'
+      });
     }
   });
 }
+
 
 }

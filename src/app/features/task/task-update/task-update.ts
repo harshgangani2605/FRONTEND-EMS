@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TaskService } from '../task.service';
 import { ProjectService } from '../../project/project.service';
 import { EmployeeService } from '../../employees/services/employee.service';
-
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -84,19 +84,37 @@ export class TaskUpdateComponent implements OnInit {
   }
 
   save(form: NgForm) {
-    if (form.invalid) return;
 
-    this.saving = true;
+  if (form.invalid) return;
 
-    this.taskService.update(this.id, this.model).subscribe({
-      next: () => {
-        alert('Task updated successfully');
-        this.router.navigate(['/task/list']);
-      },
-      error: (err: any) => {
-        this.saving = false;
-        alert(err.error?.message ?? 'Failed to update task');
-      }
-    });
-  }
+  this.saving = true;
+
+  this.taskService.update(this.id, this.model).subscribe({
+
+    next: () => {
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Updated!',
+        text: 'Task updated successfully.',
+        timer: 1500,
+        showConfirmButton: false
+      });
+
+      this.router.navigate(['/task/list']);
+    },
+
+    error: (err: any) => {
+
+      this.saving = false;
+
+      Swal.fire({
+        icon: 'error',
+        title: 'Failed!',
+        text: err.error?.message ?? 'Failed to update task'
+      });
+    }
+  });
+}
+
 }

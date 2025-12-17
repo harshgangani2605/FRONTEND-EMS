@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ProjectService } from '../project.service';
 import { HasPermissionDirective } from '../../../shared/directives/has-permission.directive';
 import { PermissionService } from '../../../core/services/permission.service';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -66,18 +67,49 @@ export class ProjectListComponent implements OnInit {
   }
 
   delete(id: number) {
-    if (!confirm("Are you sure you want to delete this project?")) return;
 
-    this.projectService.delete(id).subscribe({
-      next: () => {
-        alert("Project deleted successfully");
-        this.loadProjects();
-      },
-      error: (err: any) => {
-        alert(err.error?.message ?? "Failed to delete project");
-      }
-    });
-  }
+  Swal.fire({
+    title: 'Are you sure?',
+    text: 'This project will be deleted permanently!',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#dc2626',
+    cancelButtonColor: '#6b7280',
+    confirmButtonText: 'Yes, delete it',
+    cancelButtonText: 'Cancel'
+  }).then(result => {
+
+    if (result.isConfirmed) {
+
+      this.projectService.delete(id).subscribe({
+        next: () => {
+
+          Swal.fire({
+            icon: 'success',
+            title: 'Deleted!',
+            text: 'Project deleted successfully.',
+            timer: 1500,
+            showConfirmButton: false
+          });
+
+          this.loadProjects();
+        },
+
+        error: (err: any) => {
+
+          Swal.fire({
+            icon: 'error',
+            title: 'Failed!',
+            text: err.error?.message ?? 'Unable to delete project'
+          });
+        }
+      });
+
+    }
+
+  });
+}
+
 
   nextPage() {
     if ((this.page * this.pageSize) < this.totalCount) {

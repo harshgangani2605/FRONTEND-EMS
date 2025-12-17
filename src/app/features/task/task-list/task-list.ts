@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { TaskService } from '../task.service';
 import { PermissionService } from '../../../core/services/permission.service';
 import { HasPermissionDirective } from '../../../shared/directives/has-permission.directive';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-task-list',
@@ -72,18 +73,49 @@ export class TaskListComponent implements OnInit {
   }
 
   delete(id: number): void {
-    if (!confirm('Are you sure you want to delete this task?')) return;
 
-    this.taskService.delete(id).subscribe({
-      next: () => {
-        alert('Task deleted successfully');
-        this.loadTasks();
-      },
-      error: (err: any) => {
-        alert(err.error?.message ?? 'Failed to delete task');
-      }
-    });
-  }
+  Swal.fire({
+    title: 'Are you sure?',
+    text: 'This task will be deleted permanently!',
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonColor: '#dc2626',
+    cancelButtonColor: '#6b7280',
+    confirmButtonText: 'Yes, delete it',
+    cancelButtonText: 'Cancel'
+  }).then(result => {
+
+    if (result.isConfirmed) {
+
+      this.taskService.delete(id).subscribe({
+
+        next: () => {
+
+          Swal.fire({
+            icon: 'success',
+            title: 'Deleted!',
+            text: 'Task deleted successfully.',
+            timer: 1500,
+            showConfirmButton: false
+          });
+
+          this.loadTasks();
+        },
+
+        error: (err: any) => {
+
+          Swal.fire({
+            icon: 'error',
+            title: 'Failed!',
+            text: err.error?.message ?? 'Failed to delete task'
+          });
+        }
+      });
+
+    }
+
+  });
+}
 
   changeStatus(id: number, status: string): void {
     this.taskService.updateStatus(id, status).subscribe({

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ProjectService } from '../project.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-project-create',
@@ -39,7 +40,6 @@ export class ProjectCreateComponent {
   save(form: NgForm) {
 
   if (form.invalid || !this.isEndDateValid()) {
-    // ⭐ SHOW ALL ERRORS
     Object.values(form.controls).forEach(control => {
       control.markAsTouched();
     });
@@ -49,13 +49,29 @@ export class ProjectCreateComponent {
   this.saving = true;
 
   this.projectService.create(this.model).subscribe({
+
     next: () => {
-      alert('Project created successfully');
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: 'Project created successfully.',
+        timer: 1500,
+        showConfirmButton: false
+      });
+
       this.router.navigate(['/project/list']);
     },
+
     error: (err) => {
+
       this.saving = false;
-      alert(err.error?.message ?? 'Failed to create project');
+
+      Swal.fire({
+        icon: 'error',
+        title: 'Failed!',
+        text: err.error?.message ?? 'Failed to create project'
+      });
     }
   });
 }

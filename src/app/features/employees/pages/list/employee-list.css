@@ -92,8 +92,22 @@
 }
 
 /* 👇 Center "Actions" column text */
-.employee-table th:last-child {
-  text-align: center !important;
+/* Center ONLY Actions header */
+.employee-table th.actions-header {
+  text-align: center;
+}
+
+/* Keep Skills & all normal columns LEFT aligned */
+.employee-table th,
+.employee-table td {
+  text-align: left;
+}
+
+/* Center ONLY action buttons using flex */
+.employee-table td.action-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .employee-table td {
@@ -114,12 +128,6 @@
   align-items: center;
 }
 
-/* OUTER GROUP BORDER */
-.action-buttons {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 
 /* Compact grouped buttons (NOT a big box) */
 .action-buttons {
