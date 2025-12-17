@@ -4,15 +4,10 @@
     <h2>Skills</h2>
 
     <div class="header-actions">
-      <input type="text"
-        class="search-input"
-        placeholder="Search skills..."
-        [(ngModel)]="searchText"
+      <input type="text" class="search-input" placeholder="Search skills..." [(ngModel)]="searchText"
         (input)="filterSkills()" />
 
-      <button class="add-btn"
-        *hasPermission="'skill.create'"
-        (click)="create()">
+      <button class="add-btn" *hasPermission="'skill.create'" (click)="create()">
         + Add Skill
       </button>
     </div>
@@ -39,18 +34,19 @@
           <td *ngIf="isAdmin">{{ s.createdBy }}</td>
 
           <td *ngIf="hasAnyActionPermission()" class="action-buttons">
-            <button class="edit-btn"
-              *hasPermission="'skill.edit'"
-              (click)="edit(s.id)">
-              Edit
+
+            <!-- EDIT -->
+            <button class="icon-btn edit" title="Edit Skill" *hasPermission="'skill.edit'" (click)="edit(s.id)">
+              <i class="bi bi-pencil"></i>
             </button>
 
-            <button class="delete-btn"
-              *hasPermission="'skill.delete'"
-              (click)="delete(s.id)">
-              Delete
+            <!-- DELETE -->
+            <button class="icon-btn delete" title="Delete Skill" *hasPermission="'skill.delete'" (click)="delete(s.id)">
+              <i class="bi bi-trash"></i>
             </button>
+
           </td>
+
         </tr>
       </tbody>
     </table>

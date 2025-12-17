@@ -112,6 +112,10 @@ export class EmployeeListComponent implements OnInit {
   get isAdmin(): boolean {
   return this.permissionService.has('admin');
 }
+get canViewSalary(): boolean {
+  return this.permissionService.has('salary');
+}
+
 
 
 }

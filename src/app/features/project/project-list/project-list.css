@@ -67,6 +67,12 @@
 }
 
 /* same button style as employees */
+.action-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
 
 /* ===========================================
    ADD BUTTON
@@ -128,10 +134,7 @@
    ACTION BUTTONS (Edit - Delete)
 =========================================== */
 .action-buttons {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0px;
+  gap: 0;
 }
 
 /* Button base */
@@ -182,16 +185,6 @@
   background: #16a34a;
   color: #ffffff;
 }
-/* MANAGE (Role / Permission) */
-.icon-btn.manage {
-  color: #0d9488; /* teal */
-}
-
-.icon-btn.manage:hover {
-  background: #0d9488;
-  color: #ffffff;
-}
-
 
 /* ===========================================
    PAGINATION
@@ -267,10 +260,6 @@
 
 /* Mobile - Compact Layout */
 @media (max-width: 600px) {
-   .department-table {
-    min-width: 110% !important;  /* 🔥 FIX */
-    font-size: 12px;
-  }
 
   .header-actions {
     flex-direction: column;

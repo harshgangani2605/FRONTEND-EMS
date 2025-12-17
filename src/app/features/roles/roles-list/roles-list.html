@@ -6,17 +6,10 @@
 
     <div class="header-actions">
 
-      <input 
-        type="text"
-        class="search-input"
-        placeholder="Search roles..."
-        [(ngModel)]="searchText"
+      <input type="text" class="search-input" placeholder="Search roles..." [(ngModel)]="searchText"
         (input)="filterRoles()" />
 
-      <button 
-        class="add-btn"
-        *hasPermission="'role.create'"
-        (click)="goCreate()">
+      <button class="add-btn" *hasPermission="'role.create'" (click)="goCreate()">
         + Create Role
       </button>
 
@@ -47,21 +40,19 @@
           <!-- SINGLE CELL -->
           <td *ngIf="hasAnyActionPermission()" class="action-buttons">
 
-            <button
-              class="edit-btn"
-              *hasPermission="'role.manage'"
-              (click)="goManage(r.id)">
-              Manage
+            <!-- MANAGE -->
+            <button class="icon-btn manage" title="Manage Role" *hasPermission="'role.manage'" (click)="goManage(r.id)">
+              <i class="bi bi-gear"></i>
             </button>
 
-            <button
-              class="delete-btn"
-              *hasPermission="'role.delete'"
+            <!-- DELETE -->
+            <button class="icon-btn delete" title="Delete Role" *hasPermission="'role.delete'"
               (click)="deleteRole(r.id)">
-              Delete
+              <i class="bi bi-trash"></i>
             </button>
 
           </td>
+
 
         </tr>
       </tbody>

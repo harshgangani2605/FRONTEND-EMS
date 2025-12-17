@@ -133,30 +133,57 @@
 /* ===========================================
    ACTION BUTTONS (Edit - Delete)
 =========================================== */
-.action-buttons,
-.action-cell {
-  white-space: nowrap;
+.action-buttons {
+  gap: 0;
 }
 
-/* EXACT EMPLOYEE STYLE BUTTONS */
-
-.edit-btn,
-.delete-btn {
-  background: #374151;
-  padding: 7px 16px;
-  border: none;
-  border-radius: 6px;
-  color: #fff;
+/* Button base */
+.icon-btn {
+  width: 34px;
+  height: 34px;
+  background: #ffffff;
+  border: 1px solid #d8d9dd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  font-size: 12px;
-  transition: 0.25s;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.10);
+  font-size: 15px;
+  transition: background 0.18s ease, color 0.18s ease;
 }
 
-.edit-btn:hover,
-.delete-btn:hover {
-  background: #111827;
-  transform: translateY(-2px);
+/* Rounded only on edges */
+.icon-btn:first-child {
+  border-radius: 8px 0 0 8px;
+}
+.icon-btn:last-child {
+  border-radius: 0 8px 8px 0;
+}
+.icon-btn:not(:last-child) {
+  border-right: none;
+}
+
+/* ICON COLORS (DEFAULT) */
+.icon-btn.view { color: #2563eb; }
+.icon-btn.edit { color: #047857; }
+.icon-btn.delete { color: #dc2626; }
+.icon-btn.success { color: #16a34a; }
+
+/* HOVER — CLEAN & SUBTLE */
+.icon-btn.view:hover {
+  background: #2563eb;
+  color: #ffffff;
+}
+.icon-btn.edit:hover {
+  background: #047857;
+  color: #ffffff;
+}
+.icon-btn.delete:hover {
+  background: #dc2626;
+  color: #ffffff;
+}
+.icon-btn.success:hover {
+  background: #16a34a;
+  color: #ffffff;
 }
 
 
@@ -235,6 +262,9 @@
 /* Mobile - Compact Layout */
 @media (max-width: 600px) {
 
+  .department-table {
+    min-width: 100%;   /* ❗ instead of 700px */
+  }
   .header-actions {
     flex-direction: column;
     width: 100%;
