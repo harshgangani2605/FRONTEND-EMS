@@ -1,0 +1,80 @@
+<div class="department-container">
+
+  <!-- HEADER -->
+  <div class="header-row">
+    <h2>My Leaves</h2>
+
+    <div class="header-actions">
+      <button
+        class="add-btn"
+        routerLink="/leave/create"
+        *hasPermission="'leave.create'">
+        + Apply Leave
+      </button>
+    </div>
+  </div>
+
+  <p *ngIf="loading">Loading leaves...</p>
+
+  <div class="table-wrapper" *ngIf="!loading">
+    <table class="department-table">
+
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Leave Type</th>
+          <th>From</th>
+          <th>To</th>
+          <th>Status</th>
+          <th class="actions-header">Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <tr *ngFor="let l of leaves; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ l.leaveType }}</td>
+          <td>{{ l.fromDate | date:'dd-MM-yyyy' }}</td>
+          <td>{{ l.toDate | date:'dd-MM-yyyy' }}</td>
+
+          <td>
+            <span class="status pending" *ngIf="l.status === 'Pending'">Pending</span>
+            <span class="status approved" *ngIf="l.status === 'Approved'">Approved</span>
+            <span class="status rejected" *ngIf="l.status === 'Rejected'">Rejected</span>
+          </td>
+
+          <td class="action-buttons">
+
+            <!-- VIEW -->
+            <button class="icon-btn view" (click)="view(l.id)">
+              <i class="bi bi-eye"></i>
+            </button>
+
+            <!-- EDIT (PENDING ONLY) -->
+            <button
+              class="icon-btn edit"
+              *ngIf="l.status === 'Pending'"
+              (click)="edit(l.id)">
+              <i class="bi bi-pencil"></i>
+            </button>
+
+            <!-- DELETE (PENDING ONLY) -->
+            <button
+              class="icon-btn delete"
+              *ngIf="l.status === 'Pending'"
+              (click)="delete(l.id)">
+              <i class="bi bi-trash"></i>
+            </button>
+
+          </td>
+        </tr>
+
+        <tr *ngIf="leaves.length === 0">
+          <td colspan="6" class="no-data">No leaves found</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+</div>

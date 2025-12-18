@@ -39,13 +39,21 @@
         <i class="bi bi-layers"></i> Skills
       </li>
 
-      <li routerLink="/project/list" routerLinkActive="active"  *hasPermission="'project.view'">
+      <li routerLink="/project/list" routerLinkActive="active" *hasPermission="'project.view'">
         <i class="bi bi-kanban"></i> Projects
       </li>
 
-      <li routerLink="/task/list" routerLinkActive="active"  *hasPermission="'task.view'">
+      <li routerLink="/task/list" routerLinkActive="active" *hasPermission="'task.view'">
         <i class="bi bi-list-task"></i> Tasks
       </li>
+      <li routerLink="/leave/my" routerLinkActive="active" *hasPermission="'leave.view'">
+        <i class="bi bi-calendar-check"></i> My Leaves
+      </li>
+
+      <li routerLink="/leave/all" routerLinkActive="active" *hasPermission="'leave.view.all'">
+        <i class="bi bi-calendar2-week"></i> All Leaves
+      </li>
+
 
       <li routerLink="/users" routerLinkActive="active" *hasPermission="'user.view'">
         <i class="bi bi-person-circle"></i> Users

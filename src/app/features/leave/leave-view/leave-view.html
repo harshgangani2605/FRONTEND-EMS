@@ -1,0 +1,44 @@
+<div class="form-container" *ngIf="!loading">
+
+  <h2>Leave Details</h2>
+
+  <div class="view-row">
+    <label>Leave Type</label>
+    <p>{{ leave.leaveType }}</p>
+  </div>
+
+  <div class="view-row">
+    <label>From Date</label>
+    <p>{{ leave.fromDate | date:'dd-MM-yyyy' }}</p>
+  </div>
+
+  <div class="view-row">
+    <label>To Date</label>
+    <p>{{ leave.toDate | date:'dd-MM-yyyy' }}</p>
+  </div>
+
+  <div class="view-row">
+    <label>Status</label>
+    <span
+      class="status"
+      [ngClass]="{
+        'pending': leave.status === 'Pending',
+        'approved': leave.status === 'Approved',
+        'rejected': leave.status === 'Rejected'
+      }">
+      {{ leave.status }}
+    </span>
+  </div>
+
+  <div class="view-row">
+    <label>Reason</label>
+    <p class="reason">{{ leave.reason }}</p>
+  </div>
+
+  <button class="back-btn" (click)="back()">
+    ← Back
+  </button>
+
+</div>
+
+<p *ngIf="loading">Loading leave details...</p>

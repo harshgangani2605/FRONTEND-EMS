@@ -1,0 +1,81 @@
+<div class="department-container">
+
+  <!-- HEADER -->
+  <div class="header-row">
+    <h2>Leave Requests</h2>
+  </div>
+
+  <p *ngIf="loading">Loading leaves...</p>
+
+  <div class="table-wrapper" *ngIf="!loading">
+    <table class="department-table">
+
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Employee</th>
+          <th>Leave Type</th>
+          <th>From</th>
+          <th>To</th>
+          <th>Status</th>
+          <th class="actions-header">Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+
+        <tr *ngFor="let l of leaves; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ l.userName }}</td>
+          <td>{{ l.leaveType }}</td>
+          <td>{{ l.fromDate | date:'dd-MM-yyyy' }}</td>
+          <td>{{ l.toDate | date:'dd-MM-yyyy' }}</td>
+
+          <!-- STATUS -->
+          <td>
+            <span class="status pending" *ngIf="l.status === 'Pending'">Pending</span>
+            <span class="status approved" *ngIf="l.status === 'Approved'">Approved</span>
+            <span class="status rejected" *ngIf="l.status === 'Rejected'">Rejected</span>
+          </td>
+
+          <!-- ACTIONS -->
+          <td class="action-buttons">
+
+            <!-- VIEW (ALWAYS) -->
+            <button
+              class="icon-btn view"
+              title="View"
+              (click)="view(l.id)">
+              <i class="bi bi-eye"></i>
+            </button>
+
+            <!-- APPROVE / REJECT (ONLY PENDING) -->
+            <ng-container *hasPermission="'leave.update.status'">
+              <button
+                class="icon-btn success"
+                title="Approve"
+                *ngIf="l.status === 'Pending'"
+                (click)="updateStatus(l.id, 'Approved')">
+                <i class="bi bi-check-lg"></i>
+              </button>
+
+              <button
+                class="icon-btn delete"
+                title="Reject"
+                *ngIf="l.status === 'Pending'"
+                (click)="updateStatus(l.id, 'Rejected')">
+                <i class="bi bi-x-lg"></i>
+              </button>
+            </ng-container>
+
+          </td>
+        </tr>
+
+        <tr *ngIf="leaves.length === 0">
+          <td colspan="7" class="no-data">No leave requests found</td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+</div>

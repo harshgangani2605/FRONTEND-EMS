@@ -38,6 +38,11 @@ import { TaskListComponent } from './features/task/task-list/task-list';
 import { TaskCreateComponent } from './features/task/task-create/task-create';
 import { TaskUpdateComponent } from './features/task/task-update/task-update';
 import { TaskViewComponent } from './features/task/task-view/task-view';
+import { LeaveListComponent } from './features/leave/leave-list/leave-list';
+import { LeaveCreateComponent } from './features/leave/leave-create/leave-create';
+import { LeaveUpdateComponent } from './features/leave/leave-update/leave-update';
+import { LeaveViewComponent } from './features/leave/leave-view/leave-view';
+import { LeavePendingComponent } from './features/leave/leave-pending/leave-pending';
 
 
 
@@ -145,14 +150,83 @@ export const routes: Routes = [
 
       { path: 'profile', component: ProfileComponent },
 
-      { path: 'project/list', component: ProjectListComponent },
-      { path: 'project/create', component: ProjectCreateComponent },
-      { path: 'project/update/:id', component: ProjectUpdateComponent },
+      {
+        path: 'project/list', 
+        component: ProjectListComponent, 
+        canActivate: [PermissionGuard],
+        data: { permission: 'project.view' }
+      },
+      {
+        path: 'project/create', 
+        component: ProjectCreateComponent, 
+        canActivate: [PermissionGuard],
+        data: { permission: 'project.create' }
+      },
+      {
+        path: 'project/update/:id', 
+        component: ProjectUpdateComponent, 
+        canActivate: [PermissionGuard],
+        data: { permission: 'project.edit' }
+      },
 
-      { path: 'task/list',component: TaskListComponent},
-      {path: 'task/create',component: TaskCreateComponent},
-      {path: 'task/update/:id',component: TaskUpdateComponent},
-      { path: 'task/view/:id', component: TaskViewComponent }
+      {
+        path: 'task/list', 
+        component: TaskListComponent, 
+        canActivate: [PermissionGuard],
+        data: { permission: 'task.view' }
+      },
+      {
+        path: 'task/create', 
+        component: TaskCreateComponent, 
+        canActivate: [PermissionGuard],
+        data: { permission: 'task.create' }
+      },
+      {
+        path: 'task/update/:id',
+        component: TaskUpdateComponent,
+        canActivate: [PermissionGuard],
+        data: { permission: 'task.edit' }
+      },
+      { path: 'task/view/:id',
+        component: TaskViewComponent },
+
+      // =========================
+      // LEAVES
+      // =========================
+     // =========================
+// LEAVE ROUTES
+// =========================
+{
+  path: 'leave/my',
+  component: LeaveListComponent,
+  canActivate: [PermissionGuard],
+  data: { permission: 'leave.view' }
+},
+{
+  path: 'leave/create',
+  component: LeaveCreateComponent,
+  canActivate: [PermissionGuard],
+  data: { permission: 'leave.create' }
+},
+{
+  path: 'leave/update/:id',
+  component: LeaveUpdateComponent,
+  canActivate: [PermissionGuard],
+  data: { permission: 'leave.update' }
+},
+{
+  path: 'leave/view/:id',
+  component: LeaveViewComponent,
+  canActivate: [PermissionGuard],
+   data: { permission: 'leave.view' }  // View leave details
+},
+{
+  path: 'leave/all',
+  component: LeavePendingComponent,
+  canActivate: [PermissionGuard],
+  data: { permission: 'leave.view.all' } // Admin/HR/Manager
+}
+
 
 
     ],
