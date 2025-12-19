@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -26,15 +26,41 @@ export class LeaveService {
   // =========================
   // USER: GET MY LEAVES
   // =========================
-  getMyLeaves(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/my`);
+    getMyLeavesPaged(
+    page: number,
+    pageSize: number,
+    search: string = ''
+  ): Observable<any> {
+
+    let params = new HttpParams()
+      .set('page', page)
+      .set('pageSize', pageSize);
+
+    if (search) {
+      params = params.set('search', search);
+    }
+
+    return this.http.get(`${this.baseUrl}/my`, { params });
   }
 
   // =========================
   // ADMIN: GET ALL LEAVES
   // =========================
-  getAllLeaves(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/all`);
+   getAllLeavesPaged(
+    page: number,
+    pageSize: number,
+    search: string = ''
+  ): Observable<any> {
+
+    let params = new HttpParams()
+      .set('page', page)
+      .set('pageSize', pageSize);
+
+    if (search) {
+      params = params.set('search', search);
+    }
+
+    return this.http.get(`${this.baseUrl}/all`, { params });
   }
 
   // =========================

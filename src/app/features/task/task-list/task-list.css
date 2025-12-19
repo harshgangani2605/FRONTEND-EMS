@@ -129,7 +129,10 @@
 .department-table tr:hover td {
   background: #F9FAFB;
 }
-
+.no-data{
+  text-align: center;
+  margin-top: 10px;
+}
 /* ===========================================
    ACTION BUTTONS (Edit - Delete)
 =========================================== */

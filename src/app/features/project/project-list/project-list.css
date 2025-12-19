@@ -39,7 +39,11 @@
   gap: 12px;
   flex-wrap: wrap;
 }
-
+.no-data{
+  text-align: center;
+  margin-top: 10px;
+}
+/* 
 /* ===========================================
    SEARCH INPUT
 =========================================== */

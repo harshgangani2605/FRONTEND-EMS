@@ -16,6 +16,11 @@ export class LeavePendingComponent implements OnInit {
   leaves: any[] = [];
   loading = true;
 
+  // 🔥 PAGINATION
+  page = 1;
+  pageSize = 10;
+  totalPages = 1;
+
   constructor(
     private leaveService: LeaveService,
     private router: Router
@@ -28,13 +33,32 @@ export class LeavePendingComponent implements OnInit {
   loadLeaves(): void {
     this.loading = true;
 
-    this.leaveService.getAllLeaves().subscribe({
-      next: res => {
-        this.leaves = res;
-        this.loading = false;
-      },
-      error: () => this.loading = false
-    });
+    this.leaveService
+      .getAllLeavesPaged(this.page, this.pageSize, '')
+      .subscribe({
+        next: (res: any) => {
+          this.leaves = res.items;          // ✅ FIX
+          this.totalPages = res.totalPages;
+          this.loading = false;
+        },
+        error: () => {
+          this.loading = false;
+        }
+      });
+  }
+
+  nextPage(): void {
+    if (this.page < this.totalPages) {
+      this.page++;
+      this.loadLeaves();
+    }
+  }
+
+  prevPage(): void {
+    if (this.page > 1) {
+      this.page--;
+      this.loadLeaves();
+    }
   }
 
   view(id: number): void {

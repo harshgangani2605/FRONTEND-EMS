@@ -66,7 +66,8 @@
 ============================== */
 .status-badge {
   display: inline-block;
-  padding: 0px 14px;
+  padding: 0px 0px;
+  font-weight: 700;
   border-radius: 999px;
 }
 
@@ -76,12 +77,12 @@
 }
 
 .status-badge.progress {
-  background: #eff6ff;
+
   color: #1d4ed8;
 }
 
 .status-badge.completed {
-  background: #ecfdf5;
+
   color: #047857;
 }
 
@@ -103,13 +104,11 @@
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  background: #e5e7eb;
-  color: #111827;
+  background: #374151;
+  color: white;
 }
 
-.btn:hover {
-  background: #d1d5db;
-}
+
 
 /* ==============================
    DESKTOP (ROW LAYOUT)

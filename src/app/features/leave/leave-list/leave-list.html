@@ -5,14 +5,29 @@
     <h2>My Leaves</h2>
 
     <div class="header-actions">
-      <button class="add-btn" routerLink="/leave/create" *hasPermission="'leave.create'">
+
+      <!-- SEARCH -->
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Search leaves..."
+        [(ngModel)]="search"
+        (input)="onSearch()" />
+
+      <!-- APPLY LEAVE -->
+      <button
+        class="add-btn"
+        routerLink="/leave/create"
+        *hasPermission="'leave.create'">
         + Apply Leave
       </button>
     </div>
   </div>
 
+  <!-- LOADING -->
   <p *ngIf="loading">Loading leaves...</p>
 
+  <!-- TABLE -->
   <div class="table-wrapper" *ngIf="!loading">
     <table class="department-table">
 
@@ -30,38 +45,56 @@
       <tbody>
 
         <tr *ngFor="let l of leaves; let i = index">
-          <td>{{ i + 1 }}</td>
+          <!-- 🔥 FIXED INDEX (PAGINATION SAFE) -->
+          <td>{{ (page - 1) * pageSize + i + 1 }}</td>
+
           <td>{{ l.leaveType }}</td>
           <td>{{ l.fromDate | date:'dd-MM-yyyy' }}</td>
           <td>{{ l.toDate | date:'dd-MM-yyyy' }}</td>
 
+          <!-- STATUS -->
           <td>
-            <span class="status pending" *ngIf="l.status === 'Pending'">Pending</span>
-            <span class="status approved" *ngIf="l.status === 'Approved'">Approved</span>
-            <span class="status rejected" *ngIf="l.status === 'Rejected'">Rejected</span>
+            <span
+              class="status-badge"
+              [ngClass]="{
+                'pending': l.status === 'Pending',
+                'approved': l.status === 'Approved',
+                'rejected': l.status === 'Rejected'
+              }">
+              {{ l.status }}
+            </span>
           </td>
 
+          <!-- ACTIONS -->
           <td class="action-buttons">
 
             <!-- VIEW -->
-            <button class="icon-btn view" (click)="view(l.id)">
+            <button
+              class="icon-btn view"
+              title="View Leave"
+              (click)="view(l.id)">
               <i class="bi bi-eye"></i>
             </button>
 
             <!-- EDIT (PENDING ONLY) -->
             <ng-container *ngIf="l.status === 'Pending'">
               <ng-container *hasPermission="'leave.edit'">
-                <button class="icon-btn edit" (click)="edit(l.id)">
+                <button
+                  class="icon-btn edit"
+                  title="Edit Leave"
+                  (click)="edit(l.id)">
                   <i class="bi bi-pencil"></i>
                 </button>
               </ng-container>
             </ng-container>
 
-
             <!-- DELETE (PENDING ONLY) -->
             <ng-container *ngIf="l.status === 'Pending'">
               <ng-container *hasPermission="'leave.delete'">
-                <button class="icon-btn delete" (click)="delete(l.id)">
+                <button
+                  class="icon-btn delete"
+                  title="Delete Leave"
+                  (click)="delete(l.id)">
                   <i class="bi bi-trash"></i>
                 </button>
               </ng-container>
@@ -70,6 +103,7 @@
           </td>
         </tr>
 
+        <!-- NO DATA -->
         <tr *ngIf="leaves.length === 0">
           <td colspan="6" class="no-data">No leaves found</td>
         </tr>
@@ -77,4 +111,24 @@
       </tbody>
     </table>
   </div>
+
+  <!-- PAGINATION -->
+  <div class="pagination" *ngIf="!loading && totalPages > 1">
+    <button
+      (click)="prevPage()"
+      [disabled]="page === 1">
+      Prev
+    </button>
+
+    <span>
+      Page {{ page }} of {{ totalPages }}
+    </span>
+
+    <button
+      (click)="nextPage()"
+      [disabled]="page === totalPages">
+      Next
+    </button>
+  </div>
+
 </div>

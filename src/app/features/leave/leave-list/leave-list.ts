@@ -3,12 +3,12 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { LeaveService } from '../leave.service';
 import { HasPermissionDirective } from '../../../shared/directives/has-permission.directive';
-import { PermissionService } from '../../../core/services/permission.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-leave-list',
   standalone: true,
-  imports: [CommonModule, RouterModule, HasPermissionDirective],
+  imports: [CommonModule, RouterModule, HasPermissionDirective,FormsModule],
   templateUrl: './leave-list.html',
   styleUrls: ['./leave-list.css']
 })
@@ -16,6 +16,15 @@ export class LeaveListComponent implements OnInit {
 
   leaves: any[] = [];
   loading = true;
+
+  // 🔥 PAGINATION
+  page = 1;
+  pageSize = 10;
+  totalItems = 0;
+  totalPages = 1;
+
+  // 🔍 SEARCH
+  search = '';
 
   constructor(
     private leaveService: LeaveService,
@@ -26,18 +35,55 @@ export class LeaveListComponent implements OnInit {
     this.loadMyLeaves();
   }
 
+  // =========================
+  // LOAD LEAVES (PAGED)
+  // =========================
   loadMyLeaves(): void {
     this.loading = true;
 
-    this.leaveService.getMyLeaves().subscribe({
-      next: res => {
-        this.leaves = res;
-        this.loading = false;
-      },
-      error: () => this.loading = false
-    });
+    this.leaveService
+      .getMyLeavesPaged(this.page, this.pageSize, this.search)
+      .subscribe({
+        next: (res) => {
+          this.leaves = res.items;
+          this.totalItems = res.totalItems;
+          this.totalPages = res.totalPages;
+          this.loading = false;
+        },
+        error: () => {
+          this.loading = false;
+        }
+      });
   }
 
+  // =========================
+  // SEARCH
+  // =========================
+  onSearch(): void {
+    this.page = 1;           // reset to first page
+    this.loadMyLeaves();
+  }
+
+  // =========================
+  // PAGINATION
+  // =========================
+  nextPage(): void {
+    if (this.page < this.totalPages) {
+      this.page++;
+      this.loadMyLeaves();
+    }
+  }
+
+  prevPage(): void {
+    if (this.page > 1) {
+      this.page--;
+      this.loadMyLeaves();
+    }
+  }
+
+  // =========================
+  // ACTIONS
+  // =========================
   view(id: number): void {
     this.router.navigate(['/leave/view', id]);
   }
