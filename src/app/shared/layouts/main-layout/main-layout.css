@@ -91,6 +91,7 @@
     HEADER
 ---------------------------------------------------- */
 .header-bar{
+  position:relative;          /* 🔥 ADD THIS */
   background:white;
   padding:15px 20px;
   border-radius:10px;
@@ -100,6 +101,7 @@
   align-items:center;
   box-shadow:0 2px 6px rgba(0,0,0,.08);
 }
+
 
 .header-actions{
   display:flex;
@@ -190,10 +192,10 @@
     HAMBURGER BUTTON
 ---------------------------------------------------- */
 .mobile-toggle{
-  position:fixed;
-  top:10px;
-  left:10px;
-  z-index:5000;
+  position:absolute;          /* 🔥 CHANGED */
+  top:12px;
+  left:12px;
+  z-index:100;
   background:#1f2937;
   color:#fff;
   border:none;
@@ -202,6 +204,7 @@
   border-radius:8px;
   display:none;
 }
+
 @media(max-width:768px){
   .mobile-toggle{
     display:block;

@@ -151,33 +151,33 @@ export const routes: Routes = [
       { path: 'profile', component: ProfileComponent },
 
       {
-        path: 'project/list', 
-        component: ProjectListComponent, 
+        path: 'project/list',
+        component: ProjectListComponent,
         canActivate: [PermissionGuard],
         data: { permission: 'project.view' }
       },
       {
-        path: 'project/create', 
-        component: ProjectCreateComponent, 
+        path: 'project/create',
+        component: ProjectCreateComponent,
         canActivate: [PermissionGuard],
         data: { permission: 'project.create' }
       },
       {
-        path: 'project/update/:id', 
-        component: ProjectUpdateComponent, 
+        path: 'project/update/:id',
+        component: ProjectUpdateComponent,
         canActivate: [PermissionGuard],
         data: { permission: 'project.edit' }
       },
 
       {
-        path: 'task/list', 
-        component: TaskListComponent, 
+        path: 'task/list',
+        component: TaskListComponent,
         canActivate: [PermissionGuard],
         data: { permission: 'task.view' }
       },
       {
-        path: 'task/create', 
-        component: TaskCreateComponent, 
+        path: 'task/create',
+        component: TaskCreateComponent,
         canActivate: [PermissionGuard],
         data: { permission: 'task.create' }
       },
@@ -187,48 +187,47 @@ export const routes: Routes = [
         canActivate: [PermissionGuard],
         data: { permission: 'task.edit' }
       },
-      { path: 'task/view/:id',
-        component: TaskViewComponent },
+      {
+        path: 'task/view/:id',
+        component: TaskViewComponent
+      },
 
       // =========================
       // LEAVES
       // =========================
-     // =========================
-// LEAVE ROUTES
-// =========================
-{
-  path: 'leave/my',
-  component: LeaveListComponent,
-  canActivate: [PermissionGuard],
-  data: { permission: 'leave.view' }
-},
-{
-  path: 'leave/create',
-  component: LeaveCreateComponent,
-  canActivate: [PermissionGuard],
-  data: { permission: 'leave.create' }
-},
-{
-  path: 'leave/update/:id',
-  component: LeaveUpdateComponent,
-  canActivate: [PermissionGuard],
-  data: { permission: 'leave.update' }
-},
-{
-  path: 'leave/view/:id',
-  component: LeaveViewComponent,
-  canActivate: [PermissionGuard],
-   data: { permission: 'leave.view' }  // View leave details
-},
-{
-  path: 'leave/all',
-  component: LeavePendingComponent,
-  canActivate: [PermissionGuard],
-  data: { permission: 'leave.view.all' } // Admin/HR/Manager
-}
-
-
-
+      // =========================
+      // LEAVE ROUTES
+      // =========================
+      {
+        path: 'leave/my',
+        component: LeaveListComponent,
+        canActivate: [PermissionGuard],
+        data: { permission: 'leave.view' }
+      },
+      {
+        path: 'leave/create',
+        component: LeaveCreateComponent,
+        canActivate: [PermissionGuard],
+        data: { permission: 'leave.create' }
+      },
+      {
+        path: 'leave/update/:id',
+        component: LeaveUpdateComponent,
+        canActivate: [PermissionGuard],
+        data: { permission: 'leave.update' }
+      },
+      {
+        path: 'leave/view/:id',
+        component: LeaveViewComponent,
+        canActivate: [PermissionGuard],
+        data: { permission: 'leave.view' }  // View leave details
+      },
+      {
+        path: 'leave/all',
+        component: LeavePendingComponent,
+        canActivate: [PermissionGuard],
+        data: { permission: 'leave.view.all' } // Admin/HR/Manager
+      }
     ],
   },
 

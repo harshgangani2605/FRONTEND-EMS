@@ -8,7 +8,7 @@ import { TaskService } from '../task.service';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './task-view.html',
-  styleUrls: ['./task-view.css']
+  styleUrl:'./task-view.css'
 })
 export class TaskViewComponent implements OnInit {
 

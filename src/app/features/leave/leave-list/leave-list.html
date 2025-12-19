@@ -5,10 +5,7 @@
     <h2>My Leaves</h2>
 
     <div class="header-actions">
-      <button
-        class="add-btn"
-        routerLink="/leave/create"
-        *hasPermission="'leave.create'">
+      <button class="add-btn" routerLink="/leave/create" *hasPermission="'leave.create'">
         + Apply Leave
       </button>
     </div>
@@ -52,20 +49,23 @@
             </button>
 
             <!-- EDIT (PENDING ONLY) -->
-            <button
-              class="icon-btn edit"
-              *ngIf="l.status === 'Pending'"
-              (click)="edit(l.id)">
-              <i class="bi bi-pencil"></i>
-            </button>
+            <ng-container *ngIf="l.status === 'Pending'">
+              <ng-container *hasPermission="'leave.edit'">
+                <button class="icon-btn edit" (click)="edit(l.id)">
+                  <i class="bi bi-pencil"></i>
+                </button>
+              </ng-container>
+            </ng-container>
+
 
             <!-- DELETE (PENDING ONLY) -->
-            <button
-              class="icon-btn delete"
-              *ngIf="l.status === 'Pending'"
-              (click)="delete(l.id)">
-              <i class="bi bi-trash"></i>
-            </button>
+            <ng-container *ngIf="l.status === 'Pending'">
+              <ng-container *hasPermission="'leave.delete'">
+                <button class="icon-btn delete" (click)="delete(l.id)">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </ng-container>
+            </ng-container>
 
           </td>
         </tr>
